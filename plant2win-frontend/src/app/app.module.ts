@@ -20,6 +20,19 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import {BorderToolsComponent} from "./border_tools/border.tools.component";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
+import {
+  MatButtonModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatCardModule,
+  MatTableModule
+} from "@angular/material";
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +41,15 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     BorderToolsComponent
   ],
   imports: [
+    MatButtonModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatCardModule,
+    MatTableModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,

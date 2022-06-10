@@ -320,3 +320,16 @@ span.title {
   border: dotted 3px var(--upload_symbols_theme);
   background-color: rgba(0, 162, 215, 0.28);
 } /* Default class applied to drop zones on over */
+
+.example-card {
+  max-width: 400px;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+.mat-card{
+  background-color: white;
+}
