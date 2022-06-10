@@ -1,0 +1,24 @@
+<div id="no_login_background" xmlns="http://www.w3.org/1999/html">
+  <div class="loginInfo">
+    <div class="logo"></div>
+    <div class="insideButtons" style="max-width: 100%;">
+      <div class="loginForm" style="display: inline-block" #myEmail>
+        <div class="group">
+          <input type="text" class="login-input" autocomplete=off [(ngModel)]="username" required>
+          <span class="highlight"></span>
+          <span class="bar"></span>
+          <label class="login-label">EmailAddress</label>
+        </div>
+        <div class="group">
+          <input type="text" class="login-input" autocomplete=off type="password" [(ngModel)]="password" required>
+          <span class="highlight"></span>
+          <span class="bar"></span>
+          <label class="login-label">Password</label>
+        </div>
+        <div class="roundButton" style="margin-top: 50%;" (click)="Login()">
+          <p>EnterAccount</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>l
