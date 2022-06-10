@@ -1,1 +1,1 @@
-# plant2win_hacktm2022
+# plant2earn_hacktm2022
