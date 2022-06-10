@@ -18,6 +18,7 @@ import {AuthGuard} from './services/authentication/auth.guard';
 import {MakeToastrService} from './services/toastr.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import {BorderToolsComponent} from "./border_tools/border.tools.component";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import {BorderToolsComponent} from "./border_tools/border.tools.component";
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     ToastrModule.forRoot({
       timeOut: 2000,

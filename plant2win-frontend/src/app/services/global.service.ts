@@ -8,9 +8,11 @@ import set = Reflect.set;
 export class GlobalService {
 
   public url: string;
+  public name: string;
+  public username: string;
 
-    constructor(private _http: HttpClient) {
-      this.url = "ANDREI_IP";
-    }
+  constructor(private _http: HttpClient) {
+    this.url = "https://api.xvision.app/";
+  }
 }
 

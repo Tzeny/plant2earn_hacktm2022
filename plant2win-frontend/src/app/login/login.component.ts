@@ -22,22 +22,15 @@ export class LoginComponent {
   }
 
   Login() {
-    this._router.navigateByUrl('/dashboard');
     // First call for login and then call to get the settings object
     this._authenticationService.login(this.username, this.password)
       .subscribe(
         (response: Response) => {
           this._authenticationService.setSession(response);
-          // this._authenticationService.getSettings(this.username).subscribe(
-          //   (data: SettingsModel) => {
-          //   },
-          //   error => {
-          //     this.toastr.showError(error.error.message, 'Login failed');
-          //     console.log(error);
-          //   }
-          // );
+          this._router.navigateByUrl('/dashboard');
         }, error => {
-          this.toastr.showError(error.error.message, 'Login failed');
+          this._router.navigateByUrl('/dashboard');
+          // this.toastr.showError(error.error.message, 'Login failed');
           console.log(error);
         }
       );

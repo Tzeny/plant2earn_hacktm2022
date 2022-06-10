@@ -13,21 +13,21 @@ export class AuthenticationService {
     setSession(authResult) {
         const expiresAt = new Date();
         expiresAt.setSeconds(expiresAt.getSeconds() + authResult.expires_in);
+      localStorage.setItem('id_token', authResult.auth_token);
+      localStorage.setItem('name', authResult.name);
+      this._global.name = authResult.name;
+      localStorage.setItem('username', authResult.username);
+      this._global.username = authResult.username;
     }
 
     logout() {
         // localStorage.removeItem('id_token');
         localStorage.removeItem('expires_at');
-
         localStorage.removeItem('username');
         localStorage.removeItem('name');
         localStorage.removeItem('settingsObject');
         this._router.navigate(['/login']);
 
-    }
-
-    isLoggedIn() {
-        return (localStorage.getItem('settingsObject') !== null);
     }
 
     login(username, password) {
