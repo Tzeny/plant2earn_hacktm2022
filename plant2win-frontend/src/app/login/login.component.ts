@@ -22,6 +22,7 @@ export class LoginComponent {
   }
 
   Login() {
+    this._router.navigateByUrl('/dashboard');
     // First call for login and then call to get the settings object
     this._authenticationService.login(this.username, this.password)
       .subscribe(

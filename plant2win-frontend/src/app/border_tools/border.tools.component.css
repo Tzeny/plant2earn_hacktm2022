@@ -1,0 +1,152 @@
+#smallUpperBorder {
+    height: 2px;
+    background-color: var(--upload_symbols_theme);
+}
+
+#upperBorder {
+    height: calc(var(--banner_height) - 2px);
+    position: relative;
+    background-color: var(--backround_theme);;
+}
+
+.user_lang {
+    position: relative;
+    top: 50%;
+    display: inline-block;
+    z-index: 5000;
+    float: right;
+    margin-right: 25px;
+    transform: translateY(-50%);
+}
+
+.user_lang p, i {
+    color: #c0e8ff;
+    opacity: 0.8;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.user_lang p {
+    font-size: 20px;
+}
+
+.dropMenu {
+    color: var(--upload_symbols_theme);
+    padding: 2px;
+    transform: translate3d(-50px, 45px, 0px) !important;
+    background-color: #00283d;
+}
+
+.dropdown-item:hover {
+    background-color: #184061 !important;
+}
+
+.utils {
+    height: 100%;
+    position: relative;
+    width: 70%;
+    display: inline-block;
+}
+
+.utilsButton {
+    position: relative;
+    cursor: pointer;
+    height: 100%;
+    text-align: center;
+    width: 45px;
+    display: inline-block;
+    margin-left: 10px;
+    z-index: 5000;
+}
+
+.utilsButton .extraButton {
+    width: 60px;
+}
+
+.utilsButton .extraButton .sortDownIcon {
+    margin-top: -5px;
+    margin-left: 3px
+}
+
+.utilsButton p {
+    color: var(--writing_disease);
+    margin-top: 2px;
+    font-size: 13px;
+}
+
+.utilsButton i {
+    margin-top: 5px;
+    margin-right: 0;
+}
+
+.verticalDiv {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.verticalDiv img {
+    max-width: 35%;
+}
+
+.utilsButton img, .verticalDiv i {
+    color: var(--upload_symbols_theme);
+    filter: brightness(0.5);
+}
+
+.increaseBrightness, .utilsButton img:hover, .verticalDiv i:hover {
+    filter: brightness(1.5) !important;
+}
+
+.verticalDiv:hover {
+    filter: brightness(3.5) !important;
+}
+
+.verticalDiv:hover > div {
+    filter: brightness(0.2);
+}
+
+.dropdown {
+    float: right;
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    color: var(--upload_symbols_theme);
+    padding: 2px;
+    background-color: #00283d;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    right: 0;
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content i {
+    margin-top: -5px;
+    margin-right: 5px;
+}
+
+#myDropdown a, #splitDropdown a {
+    color: white;
+}
+
+#myDropdown a:hover, #splitDropdown a:hover {
+    background-color: #184061 !important;
+}
+
+/*used to display dropdown*/
+.show {
+    display: block;
+}

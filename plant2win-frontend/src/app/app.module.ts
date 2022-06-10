@@ -17,12 +17,14 @@ import {GlobalService} from './services/global.service';
 import {AuthGuard} from './services/authentication/auth.guard';
 import {MakeToastrService} from './services/toastr.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import {BorderToolsComponent} from "./border_tools/border.tools.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    BorderToolsComponent
   ],
   imports: [
     BrowserModule,

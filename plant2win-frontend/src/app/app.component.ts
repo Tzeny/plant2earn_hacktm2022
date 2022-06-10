@@ -21,4 +21,5 @@ export class AppComponent {
               private _router: Router, public _global: GlobalService, ) {
     this.location = location;
   }
+
 }

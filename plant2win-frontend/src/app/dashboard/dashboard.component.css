@@ -1,0 +1,322 @@
+
+input[type="file"] {
+  display: none;
+}
+
+/* Useless styles, just for demo styles */
+
+.resizeUpload {
+  width: 100%;
+  position: relative;
+  height: 70%;
+  padding-top: 5%;
+  padding-bottom: 2%;
+}
+
+.drag_drop_write {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+span.title {
+  margin: 0 auto;
+  color: #BBB;
+  y: 'Open Sans', sans-serif;
+  font-size: 0.85rem;
+  text-align: center;
+  display: block;
+}
+
+
+.rgbaBackground {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.bothBackground {
+  opacity: 0.2;
+  background-color: #000;
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  /* This section calls the slideInFromLeft animation we defined above */
+  animation: 0.2s ease-out 0s 1 appear;
+}
+
+#dashboard_component {
+  font-family: 'HelveticaNeue-Roman', sans-serif;
+  margin: 0 !important;
+  overflow: hidden;
+  padding: 0 !important;
+  height: calc(100% - var(--banner_height) ) !important;
+  width: 100% !important;
+  background-color: #01131d;
+}
+
+.browseDiv {
+  display: inline-grid;;
+  margin: auto;
+  border-radius: 10px;
+  font-family: 'HelveticaNeue-Roman', sans-serif;
+  color: var(--upload_symbols_theme);
+  cursor: pointer;
+  text-align: center;
+}
+
+.uploadButton {
+  display: none;
+  overflow: hidden;
+  cursor: pointer;
+  border-color: #00A2D7;
+  width: 25%;
+  margin: 15px auto;
+  border-radius: 5px;
+  font-family: 'HelveticaNeue-Roman', sans-serif;
+  color: #C7F0FD;
+  text-align: center;
+  background-color: #00A2D7;
+}
+
+.uploadIcon {
+  margin-bottom: 25px;
+  font-weight: normal;
+}
+
+.uploadButton:hover {
+  background-color: #4db0d1;
+}
+
+/*The border image of this one creates wider gaps*/
+.largeGaps {
+  border: dashed 3px var(--upload_symbols_theme);
+  border-image: url("/assets/upload/dotted_line.png") 25 round;
+  /*border-radius: 15px;*/
+  text-align: center;
+  width: 70%;
+  margin: 0 auto;
+  height: 100%;
+  cursor: pointer;
+  background-color: #021A26;
+
+}
+
+.drag_drop_write h2 {
+  color: var(--writing_theme);
+  margin: 0px;
+}
+
+.drag_drop_write h5 {
+  font-size: 18px;
+  margin-top: 20px;
+  color: var(--gray_small_details);
+}
+
+#fileUpload {
+  cursor: pointer;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: inline-grid;;
+  margin: auto;
+  border-radius: 10px;
+  font-family: 'HelveticaNeue-Roman', sans-serif;
+  text-align: center;
+}
+
+.inputUpload {
+  cursor: pointer;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.inputUpload label {
+  /*background: #39D2B4;*/
+  padding: 5px 20px;
+  color: #fff;
+  font-weight: bold;
+  font-size: .9em;
+  transition: all .4s;
+}
+
+.inputUpload input {
+  position: absolute;
+  display: inline-block;
+  left: 0;
+  top: 0;
+  opacity: 0.01;
+  cursor: pointer;
+}
+
+#queueWrapper {
+  width: 100%;
+  position: relative;
+  height: 190px;
+}
+
+.queueScroll {
+  width: 70%;
+  max-height: 100%;
+  overflow-y: auto;
+  position: relative;
+  margin: 0px auto;
+  background-color: #04273B;
+}
+
+.queueItem {
+  height: 95px;
+  position: relative;
+}
+
+.queueItem p {
+  color: #C7F0FD;
+  font-weight: lighter;
+  margin-bottom: 5px;
+}
+
+.queueItem i {
+  color: var(--upload_symbols_theme);
+  position: relative;
+  top: 50%;
+  float: left;
+  margin-right: 20px;
+  transform: translateY(-50%);
+}
+
+.progress {
+  background-color: var(--backround_theme);
+  height: 8px;
+}
+
+.progress-bar {
+  background-color: var(--upload_symbols_theme);
+  height: 8px;
+}
+
+.cancelButton {
+  color: var(--upload_symbols_theme) !important;
+  cursor: pointer;
+  position: absolute;
+  top: 0px;
+  right: 0px
+}
+
+.imageInfo {
+  display: inline-block;
+  position: relative;
+  width: calc(100% - 52px);
+}
+
+.imageInfo .imageName {
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  width: 100px;
+}
+
+.sizeInfo {
+  color: var(--gray_small_details) !important;
+  cursor: pointer;
+  position: absolute;
+  bottom: -25px;
+  left: 0px;
+  font-size: 12px;
+}
+
+.sizePercentage {
+  color: #02759a;
+  font-size: 11px
+}
+
+@media screen and (max-height: 690px) {
+  .disappearIcon {
+    display: none;
+  }
+
+  .resizeUpload {
+    height: 60%;
+  }
+}
+
+@media screen and (max-height: 530px) {
+  .supportedExtension {
+    display: none;
+  }
+
+  #queueWrapper {
+    height: 120px;
+  }
+}
+
+@media screen and (max-height: 470px) {
+  .uploadRules {
+    font-size: 25px;
+  }
+
+}
+@media screen and (max-width: 440px) {
+  .resizeUpload{
+    padding-bottom: 6% !important;
+  }
+}
+
+@media screen and (max-width: 740px) {
+  .sizeInfo {
+    display: none;
+  }
+  .supportedExtension {
+    display: none;
+  }
+
+  .drag_drop_write h2{
+    font-size: 21px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .largeGaps, .queueScroll {
+    width:80%;
+  }
+
+  .imageInfo .imageName {
+    width: 40px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+
+  .uploadButton {
+    width: 50%;
+    margin-top: 10px;
+  }
+
+  .uploadButton p {
+    margin: 5px;
+  }
+}
+
+.showDiv {
+  display: block;
+}
+
+.fileIconUpload{
+  width: 30px;
+  margin-bottom:36px;
+  margin-right: 15px;
+}
+
+
+.nv-file-over {
+  border: dotted 3px var(--upload_symbols_theme);
+  background-color: rgba(0, 162, 215, 0.28);
+} /* Default class applied to drop zones on over */
