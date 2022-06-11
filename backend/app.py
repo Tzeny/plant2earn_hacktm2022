@@ -47,7 +47,7 @@ if __name__ == "__main__":
 
     api.router.add_route('POST', '/hacktm/segment_leaf', hacktm_handler.segment_leaf)
     api.router.add_route('POST', '/hacktm/detect_tree', hacktm_handler.segment_leaf)
-    api.router.add_route('POST', '/hacktm/nft/retrieve', hacktm_handler.retrieve_latest_nfts)
+    api.router.add_route('GET', '/hacktm/nft/retrieve', hacktm_handler.retrieve_latest_nfts)
 
     ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
     ssl_context.load_cert_chain('nginx/ssl_keys/domain_srv.crt', 'nginx/ssl_keys/domain_srv.key')
