@@ -56,7 +56,6 @@ span.title {
   margin: 0 !important;
   overflow: hidden;
   padding: 0 !important;
-  height: calc(100% - var(--banner_height) ) !important;
   width: 100% !important;
   background-color: #01131d;
 }
@@ -274,7 +273,9 @@ span.title {
   .sizeInfo {
     display: none;
   }
-  .supportedExtension {
+  .
+
+  supportedExtension {
     display: none;
   }
 
@@ -330,5 +331,5 @@ span.title {
 }
 
 .mat-card{
-  background-color: white;
+  margin-bottom: 10px;
 }

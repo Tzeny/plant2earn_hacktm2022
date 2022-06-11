@@ -31,6 +31,7 @@ import {
   MatCardModule,
   MatTableModule
 } from "@angular/material";
+import {FlexLayoutModule} from "@angular/flex-layout";
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import {
     BorderToolsComponent
   ],
   imports: [
+    FlexLayoutModule,
     MatButtonModule,
     MatFormFieldModule,
     MatIconModule,
