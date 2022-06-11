@@ -8,7 +8,6 @@ from handlers.handler import Handler
 from json import JSONDecodeError
 from utils import json_response
 from connection import rabbitmq_connection as rmq
-from models.RMQModels import AlgorithmExchangeMessage
 from aiohttp import web
 
 from PIL import Image

@@ -1,5 +1,4 @@
 import logging
-from models.ResponseTypes import *
 from universal_analytics import Tracker, AsyncHTTPRequest
 from settings import config
 import asyncio

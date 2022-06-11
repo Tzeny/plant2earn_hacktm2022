@@ -2,6 +2,7 @@ import motor.motor_asyncio
 import motor
 from models.ResponseTypes import *
 import logging
+from settings import config
 
 logger = logging.getLogger('aiohttp')
 
