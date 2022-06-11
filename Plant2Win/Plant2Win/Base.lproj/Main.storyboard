@@ -162,6 +162,7 @@
                     <navigationItem key="navigationItem" id="lFi-K9-kth"/>
                     <connections>
                         <outlet property="taskLabel" destination="GzX-yd-8mu" id="eb0-wW-VVe"/>
+                        <segue destination="Q9P-92-bpc" kind="show" identifier="SelfieVerificationSegue" id="2bI-4T-1lA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tTt-CB-Nad" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -201,6 +202,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZOv-4K-A5k" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2223" y="417"/>
+        </scene>
+        <!--Selfie Verification View Controller-->
+        <scene sceneID="f2b-xI-88G">
+            <objects>
+                <viewController id="Q9P-92-bpc" customClass="SelfieVerificationViewController" customModule="Plant2Win" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Vfj-hN-jhH">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Eq2-C7-B2w"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="FIi-Th-Ufj"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rP5-mv-Hvp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3294" y="-232"/>
         </scene>
     </scenes>
     <resources>

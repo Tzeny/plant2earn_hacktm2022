@@ -26,6 +26,7 @@
 		F817C5BB2853FB300046C929 /* LivenessController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5BA2853FB300046C929 /* LivenessController.swift */; };
 		F817C5BD2853FC2B0046C929 /* LivenessGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5BC2853FC2B0046C929 /* LivenessGuard.swift */; };
 		F817C5BF285402C30046C929 /* FaceDetectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5BE285402C30046C929 /* FaceDetectionController.swift */; };
+		F8E241132854914400A6BA3E /* SelfieVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E241122854914400A6BA3E /* SelfieVerificationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		F817C5BA2853FB300046C929 /* LivenessController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LivenessController.swift; sourceTree = "<group>"; };
 		F817C5BC2853FC2B0046C929 /* LivenessGuard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LivenessGuard.swift; sourceTree = "<group>"; };
 		F817C5BE285402C30046C929 /* FaceDetectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceDetectionController.swift; sourceTree = "<group>"; };
+		F8E241122854914400A6BA3E /* SelfieVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfieVerificationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +159,7 @@
 				F817C5A92853D3780046C929 /* MainMenuViewController.swift */,
 				F817C5AB2853D3F70046C929 /* PlantTreeViewController.swift */,
 				F817C5AD2853D4E00046C929 /* ForestViewController.swift */,
+				F8E241122854914400A6BA3E /* SelfieVerificationViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -331,6 +334,7 @@
 				F817C5AE2853D4E00046C929 /* ForestViewController.swift in Sources */,
 				F817C5BB2853FB300046C929 /* LivenessController.swift in Sources */,
 				F817C5B52853E3230046C929 /* SignUp.swift in Sources */,
+				F8E241132854914400A6BA3E /* SelfieVerificationViewController.swift in Sources */,
 				F817C5AC2853D3F70046C929 /* PlantTreeViewController.swift in Sources */,
 				F817C5792853C6AF0046C929 /* SceneDelegate.swift in Sources */,
 			);

@@ -115,6 +115,10 @@ extension PlantTreeViewController: CameraLivenessDelegate {
                         
                         print("passed")
                         
+                        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+                        AudioServicesPlayAlertSound(1057)
+                        
+                        self.performSegue(withIdentifier: "SelfieVerificationSegue", sender: nil)
                         
                         return
                     }
