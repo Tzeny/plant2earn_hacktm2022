@@ -7,6 +7,8 @@ name = "pypi"
 pytest = "*"
 eth-account = "*"
 web3 = "*"
+eth-abi = "*"
+hexbytes = "*"
 
 [dev-packages]
 

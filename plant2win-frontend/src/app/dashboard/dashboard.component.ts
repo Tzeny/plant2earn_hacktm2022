@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, DoCheck, OnInit} from '@angular/core';
 
 import {GlobalService} from '../services/global.service';
 import {MakeToastrService} from '../services/toastr.service';
@@ -20,7 +20,6 @@ export class DashboardComponent {
     this.started_upload = false;
     this._global.GetNFTs().subscribe(
       (data) => {
-        console.log(data);
         this.nfts = data;
       }, (error) => {
         console.log(error)
@@ -28,8 +27,13 @@ export class DashboardComponent {
     )
   }
 
-  openDialog() {
-    this.dialog.open(DialogComponent);
+
+  openDialog(data) {
+    this.dialog.open(DialogComponent, {
+      data: {
+        info: data
+      }
+    });
   }
 
   GetLatestPrice(prices) {
