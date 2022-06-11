@@ -14,9 +14,9 @@ class Generator:
         signature = generate_signature(self.w3,self.signer_key,token_uri)
 
         address = self.w3.eth.account.privateKeyToAccount(self.private_key).address
-        tx_data = {"nonce":self.w3.eth.getTransactionCount(address),"from":address,"gas" : 1300000,"gasPrice": self.w3.toWei("460","gwei")}
+        tx_data = {"nonce":self.w3.eth.getTransactionCount(address),"from":address,"gas" : 500000,"gasPrice": self.w3.toWei("2","gwei")}
 
-        return self.contract.functions["CreateTree"](user=user_address, v=28, r=HexBytes(signature[1]), s=HexBytes(signature[2]), tokenURI=token_uri).buildTransaction(tx_data)
+        return self.contract.functions["CreateTree"](user=user_address, v=signature[0], r=HexBytes(signature[1]), s=HexBytes(signature[2]), tokenURI=token_uri).buildTransaction(tx_data)
 
     def sign_transaction(self, transaction):
         return self.w3.eth.account.sign_transaction(transaction, self.private_key)
