@@ -27,6 +27,17 @@
     vertical-align: middle;
 }
 
+.logoImg{
+  max-width: 120px;
+  position: relative;
+  top: 50%;
+  display: inline-block;
+  z-index: 5000;
+  float: left;
+  margin-left: 25px;
+  transform: translateY(-50%);
+}
+
 .user_lang p {
     font-size: 20px;
 }
