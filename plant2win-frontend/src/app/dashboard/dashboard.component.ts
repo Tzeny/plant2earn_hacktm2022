@@ -28,8 +28,12 @@ export class DashboardComponent {
     )
   }
 
-  openDialog() {
-    this.dialog.open(DialogComponent);
+  openDialog(data) {
+    this.dialog.open(DialogComponent,{
+      data: {
+        info: data
+      }
+    });
   }
 
   GetLatestPrice(prices) {
