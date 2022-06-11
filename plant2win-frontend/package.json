@@ -24,7 +24,6 @@
     "@angular/router": "~7.2.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
-    "@mui/material": "^5.8.3",
     "bootstrap": "^4.5.2",
     "chart.js": "^2.9.3",
     "chartjs-plugin-datalabels": "^0.7.0",
@@ -53,7 +52,7 @@
     "ngx-image-zoom": "^0.3.4",
     "ngx-toastr": "^10.0.4",
     "pretty-checkbox": "^3.0.3",
-    "rxjs": "~6.3.3",
+    "rxjs": "^6.3.3",
     "secure-web-storage": "^1.0.2",
     "tslib": "^1.14.1",
     "zone.js": "~0.8.26"
