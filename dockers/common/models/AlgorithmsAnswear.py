@@ -26,8 +26,11 @@ class SegmentationAnswer:
     def get_json(self):
         return json.dumps(self.__dict__, default=to_serializable).encode('utf8')
 
-    def __init__(self, answer_type):
+    def __init__(self, answer_type, id, bbox_path, leaf_segmented_path):
         self.answer_type = answer_type
+        self.id = id
+        self.bbox_path = bbox_path
+        self.leaf_segmented_path = leaf_segmented_path
 
     def __str__(self):
         return str(self.__dict__)

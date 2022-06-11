@@ -1,0 +1,64 @@
+default:
+core:
+  enable_auth: true
+
+logging:
+  version: 1
+  disable_existing_loggers: false
+  formatters:
+    simple:
+      format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  handlers:
+    console:
+      class: logging.StreamHandler
+      level: DEBUG
+      formatter: simple
+  #            stream: ext://sys.stdout
+
+  root:
+    level: DEBUG
+    handlers: [console]
+
+RabbitMQ:
+  preprocess_exchange_default: body_part_exchange
+  preprocess_exchange_cloud2: preprocess_exchange
+  preprocess_exchange_dev2: preprocess_exchange
+  ct_head_exchange: ct_head_exchange
+  ct_chest_exchange: ct_chest_exchange
+  ct_bodypart_exchange: ct_bodypart_exchange
+  algorithms_exchange: ai_algorithms
+  algorithms_response: ai_algorithms_response
+  ip_default: rabbitmq
+#  ip_cloud2: 127.0.0.1
+#  ip_cloud: 127.0.0.1
+  ip_regina_maria_local: 192.168.0.83
+  ip_local: 127.0.0.1
+  port: 5672
+  user: admin
+  password: Timisoara13
+
+jwt:
+  JWT_SECRET: PLANT2WINSECRET
+  JWT_ALGORITHM: HS256
+  JWT_EXP_DELTA_SECONDS: 604800
+
+s3:
+  bucket_name: xvision-xray
+  xray: xray
+  radiologist_feedback: radiologist-feedback-masks
+  radiologist_label: label_data
+
+fs:
+  file_system_path_default: /dataimages/data/
+
+mongodb:
+  ip_default: mongodb
+  ip_local: 127.0.0.1
+  port: 27017
+  user: root
+  password: YrwfHnyvQTP3uwXT6Zqq
+  
+app:
+  ip: 0.0.0.0
+  port: 8000
+

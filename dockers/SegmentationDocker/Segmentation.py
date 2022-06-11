@@ -25,27 +25,24 @@ async def process_queue(queue):
             logging.info('Segmentation Starting analysis' + str(datetime.datetime.now()))
 
             data = json.loads(message.body)
-            xray_path = data['xray_path']
-            heat_path = xray_path.replace('processed', 'leaf_segmentation')
-            if not os.path.isdir(os.path.dirname(heat_path)):
-                try:
-                    os.makedirs(os.path.dirname(heat_path))
-                except FileExistsError:
-                    pass
+            img_path = data['img_path']
+            output_basepath = f'{output_dir}/{os.path.basename(ii)}'
 
             logging.info(f"Radiography {data['id']} starting analysis...")
-            if os.path.isfile(xray_path):
+            if os.path.isfile(img_path):
                 # predict on image
-                heatmap_handler.segment_leaf(xray_path, f'{heat_path}/1.jpeg', f'{heat_path}/2.jpeg')
+                bbox_path = f'{output_basepath}_1.jpeg'
+                leaf_path = f'{output_basepath}_2.jpeg'
+                heatmap_handler.segment_leaf(img_path, bbox_path, leaf_path)
 
                 logging.info(f"{data['id']} finishing analysis...")
 
-                message = SegmentationAnswer(answer_type=1)
+                message = SegmentationAnswer(1, data['id'], bbox_path, leaf_path)
+                await rmq.publish_message(exchange_type='ai_algorithms_response', message=message.get_json())
 
-                await rmq.publish_message(exchange_type='ensemble', message=message.get_json())
                 logging.debug(f"Radiography {data['id']} message sent to rabbitmq...")
             else:
-                logging.info(f"Could not process {data['id']}, file missing from {xray_path}...")
+                logging.info(f"Could not process {data['id']}, file missing from {img_path}...")
 
 
 if __name__ == "__main__":
@@ -56,7 +53,7 @@ if __name__ == "__main__":
 
     heatmap_handler = SegmentationHandler(model_path)
 
-    queue_name = f'segmentation_queue'
+    queue_name = f'leaf_segmentation_exchange'
 
     if ENV == 'dev':
         from tqdm import tqdm

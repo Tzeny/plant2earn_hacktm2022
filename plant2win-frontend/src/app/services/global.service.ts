@@ -12,7 +12,11 @@ export class GlobalService {
   public username: string;
 
   constructor(private _http: HttpClient) {
-    this.url = "https://api.plant2win.com";
+    this.url = "https://backend.plant2win.com";
+  }
+
+  public GetNFTs() {
+    return this._http.get(this.url + '/hacktm/nft/retrieve');
   }
 }
 
