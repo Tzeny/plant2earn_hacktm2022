@@ -2,7 +2,7 @@
 <div id="dashboard_component" class="fadeIn" [ngClass]="{'opacityBackground':loading_screen}">
   <div class="justify-content-md-center resizeUpload">
     <div style="height:100%">
-
+      <h2 style="color:#1e1e1e"><strong>Latest NFTs</strong></h2>
       <div fxLayout.xs="column" fxLayout="row wrap" fxLayoutGap="10px" ngClass.gt-xs="ml-10">
         <mat-card *ngFor="let num of [1,2,3,4,5,6,7,8,9]" fxFlex.sm="0 1 calc(50%-10px)" fxFlex.md="0 1 calc(33%-10px)"
                   fxFlex.gt-md="0 1 calc(25%-10px)">
