@@ -1,0 +1,282 @@
+.loginInfo {
+  text-align: center;
+  width: 50%;
+  position: relative;
+  height: 100%;
+  margin: auto;
+}
+
+.loginInfo h2 {
+  color: #ffffff;
+  /*margin-top: 2%;*/
+  font-size: 35px;
+  font-family: 'HelveticaNeue-Roman', sans-serif;
+}
+
+.loginButton {
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+  height: 100%;
+  border: 2px solid white;
+  border-radius: 100px;
+  margin: auto;
+  margin-top: 50%;
+  text-align: center;
+}
+
+.loginButton {
+  color: white;
+}
+
+.loginButton p {
+  margin: 3%;
+  font-size: 18px;
+}
+
+.loginButton:hover {
+  background-color: rgba(3, 120, 163, .3);
+  cursor: pointer;
+}
+
+.logo {
+  height: 6%;
+  /*background: url(/assets/login/logo_clasic.png) no-repeat center;*/
+  background-size: contain;
+  /*background-repeat: no-repeat;*/
+  display: block;
+  margin-top: 15%;
+  margin-bottom: 5%;
+}
+
+.middle-logo {
+
+}
+
+.logo_animation {
+  animation: play_logo 1s steps(27) forwards;
+}
+
+@keyframes play_logo {
+  from {
+    background-position: 0px;
+  }
+  to {
+    background-position: -6750px;
+  }
+}
+
+.image-background {
+  /* The image used */
+  background-image: url("/assets/login/Login_v2.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  max-width: 100%;
+  max-height: 100%;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  overflow: auto;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+
+.login-frame {
+  background-image: url("/assets/login/login_back_background.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  display: block;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.login {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.logoBottom {
+  position: absolute;
+  bottom: 0;
+  height: 100px;
+  width: 100%;
+  background-image: url("/assets/login/sponsors.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: block;
+}
+
+.insideButtons {
+  margin-top: 4%;
+  display: inline-block;
+  width: 350px;
+}
+
+.group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.login-input {
+  background-color: transparent;
+  font-size: 18px;
+  padding: 10px 10px 10px 5px;
+  display: block;
+  width: 100%;
+  border: none;
+  color: #fff;
+  border-bottom: 1px solid #fff;
+}
+
+.login-input:focus {
+  outline: none;
+}
+
+/* LABEL ======================================= */
+.login-label {
+  color: #fff;
+  font-size: 18px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 5px;
+  top: 10px;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+}
+
+/* active state */
+.login-input:focus ~ .login-label, .login-input:valid ~ .login-label {
+  top: -20px;
+  font-size: 18px;
+  color: #fff;
+}
+
+/* active state */
+.login-input:focus ~ .bar:before, .login-input:focus ~ .bar:after {
+  width: 50%;
+  font-size: 18px;
+}
+
+.loginForm {
+  position: relative;
+  float: right;
+  width: 100%;
+}
+
+#designBar {
+  border-bottom: 1px solid #fff;
+  position: absolute;
+  BOTTOM: 15%;
+  width: 100%;
+}
+
+#partnerInfo {
+  cursor: pointer;
+  position: absolute;
+  bottom: 25%;
+  font-family: 'HelveticaNeue-Roman', sans-serif;
+}
+
+#partnerInfo i {
+  color: #ffffff;
+}
+
+#partnerInfo p {
+  display: inline-block;
+  color: #ffffff;
+  font-size: 35px;
+}
+
+@media screen and (max-width: 900px) {
+  .insideButtons h2 {
+    font-size: 25px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .insideButtons h2 {
+    font-size: 20px;
+  }
+
+  #partnerInfo p {
+    font-size: 25px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .roundButton {
+    margin-top: 80% !important;
+  }
+}
+
+
+@media screen and (max-width: 400px) {
+  .roundButton {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 640px) and (min-width: 401px) {
+  .roundButton {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .logo {
+    margin: 20% auto;
+  }
+
+  .insideButtons h2 {
+    display: none !important;
+  }
+
+  .loginForm {
+    width: 80%;
+    position: relative;
+    margin: auto;
+    display: block !important;
+    float: none !important;;
+  }
+
+  #partnerInfo {
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .insideButtons h2 {
+    display: none !important;
+  }
+
+  .loginForm {
+    width: 100%;
+    float: left !important;
+  }
+}
+
+.loginForm input:-webkit-autofill ~ label, input:-webkit-autofill:hover ~ label, input:-webkit-autofill:focus ~ label, input:-webkit-autofill:focus ~ label {
+  top: -20px;
+  font-size: 18px;
+  color: #fff;
+}
+
+/* Change Autocomplete styles in Chrome*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  /*-webkit-text-fill-color: green;*/
+  /*-webkit-box-shadow: 0 0 0px 1000px #000 inset;*/
+  -webkit-text-size-adjust: none;
+  -webkit-transform: scale(1.5);
+}

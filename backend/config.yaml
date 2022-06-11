@@ -1,0 +1,7 @@
+database:
+  uri: mongodb+srv://root:cQ9YkVuaK31YHa1U@plant2earn.zysr5.mongodb.net/?retryWrites=true&w=majority
+
+jwt:
+  JWT_SECRET: XVISIONSECRET
+  JWT_ALGORITHM: HS256
+  JWT_EXP_DELTA_SECONDS: 604800
