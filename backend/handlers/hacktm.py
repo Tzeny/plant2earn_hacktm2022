@@ -15,6 +15,7 @@ from io import BytesIO
 import base64
 import logging
 import json
+import time
 from multiprocessing import Lock
 
 logger = logging.getLogger('aiohttp')
@@ -61,7 +62,7 @@ class HacktmHandler(Handler):
         #     img = Image.open(BytesIO(base64.b64decode(image_b64['img'])))
         # except:
         #     return json_response({'message': 'Error decoding image'}, status=400)
-
+        a = time.time()
         try:
             reader = await request.multipart()
             logger.info('Received images...')
@@ -71,12 +72,12 @@ class HacktmHandler(Handler):
             if image_uploaded is None:
                 raise ValueError(f'No images in the request')
 
-            # check if file filed exist
-            if 'file' not in image_uploaded.name:
-                raise AttributeError('Wrong field name for part')
+            # # check if file filed exist
+            # if 'file' not in image_uploaded.name:
+            #     raise AttributeError('Wrong field name for part')
 
             current_time = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-            request_dir = os.path.join(self.FS_PATH, '/' + current_time + '/')
+            request_dir = os.path.join(self.FS_PATH, current_time + '/')
             img_path = f'{request_dir}/img.jpeg'
 
             if not os.path.isdir(request_dir):
@@ -89,7 +90,7 @@ class HacktmHandler(Handler):
                         break
                     f.write(chunk)
 
-            logging.info(f"Image uploaded to {img_path}")
+            logger.info(f"Image from {image_uploaded.name} uploaded to {img_path} in {time.time() - a:.2f}s")
         except Exception as e:
             logger.exception(f'Error receiving image')
             return json_response({'message': f'Error receiving image: {e}'}, status=400)
@@ -112,7 +113,12 @@ class HacktmHandler(Handler):
         #     'black_image': 'url',
         #     'leaf_class':
         # }
-        return json_response({'message': f'Ok'}, status=200)
+        # return json_response({'message': f'Ok'}, status=200)
+        return {
+            'coord_copac': [100, 100, 300, 300],
+            'coord_om': [50, 50, 500, 500],
+            'bbox_image': 'https://file.plant2win.com/2022-06-11_21-17-49/nft.png'
+        }
 
     def json_response(body, **kwargs):
         kwargs['body'] = json.dumps(body or kwargs['body'], default=datetime_converter).encode(
