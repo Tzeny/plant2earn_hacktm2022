@@ -36,7 +36,7 @@ if __name__ == "__main__":
     account_handler = AccountHandler(place, backend_type, db_connection)
     hacktm_handler = HacktmHandler(place, db_connection)
 
-    api = web.Application(middlewares=[account_handler.auth_middleware])
+    api = web.Application()
 
     # setup server and routes
 
@@ -54,24 +54,7 @@ if __name__ == "__main__":
 
     aio_logger.info('Adding ssl context...')
 
-    if backend_type == 'pacs':
-        app = web.Application(middlewares=[account_handler.auth_middleware])
-        app.add_subapp("/api-backend/", api)
-        # Configure default CORS settings.
-        cors = aiohttp_cors.setup(app, defaults={
-            "*": aiohttp_cors.ResourceOptions(
-                allow_credentials=True,
-                expose_headers="*",
-                allow_headers="*",
-            )
-        })
-
-        # Configure CORS on all routes.
-        for route in list(app.router.routes()):
-            cors.add(route)
-        aio_logger.info('Adding cors filters for all routes...')
-    else:
-        app = api
+    app = api
     aio_logger.info(f'Application started on ip: {APP_IP} with port: {APP_PORT}...')
 
     web.run_app(app, host=APP_IP, port=APP_PORT)

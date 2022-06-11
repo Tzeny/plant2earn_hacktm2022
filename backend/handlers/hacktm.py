@@ -122,7 +122,7 @@ class HacktmHandler(Handler):
 
     async def retrieve_latest_nfts(self,request):
         nfts_answer = []
-        nfts = await self.db_connection.find('nfts', {'id':{'$exists':True}})
+        nfts = self.db_connection.find('nfts', {'id':{'$exists':True}})
         async for doc in nfts:
             doc['_id'] = str(doc['_id'])
             nfts_answer.append(doc)
