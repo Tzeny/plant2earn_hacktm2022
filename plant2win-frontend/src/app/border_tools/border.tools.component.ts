@@ -23,7 +23,7 @@ export class BorderToolsComponent {
   name: string;
 
   constructor(private _globalService: GlobalService,private _authenticationService:AuthenticationService) {
-    this.name = 'Company';
+    this.name = 'Liana Watson';
   }
   LogOut() {
     this._authenticationService.logout();

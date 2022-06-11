@@ -54,10 +54,9 @@ span.title {
 #dashboard_component {
   font-family: 'HelveticaNeue-Roman', sans-serif;
   margin: 0 !important;
-  overflow: hidden;
   padding: 0 !important;
   width: 100% !important;
-  background-color: #01131d;
+  background-color: #fbfcff;
 }
 
 .browseDiv {

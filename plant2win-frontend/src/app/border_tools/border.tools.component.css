@@ -1,12 +1,12 @@
 #smallUpperBorder {
-    height: 2px;
-    background-color: var(--upload_symbols_theme);
+    height: 1px;
+    background-color: #f5f5f5;
 }
 
 #upperBorder {
     height: calc(var(--banner_height) - 2px);
     position: relative;
-    background-color: var(--backround_theme);;
+    background-color: white;
 }
 
 .user_lang {
@@ -20,7 +20,7 @@
 }
 
 .user_lang p, i {
-    color: #c0e8ff;
+    color: #565472;
     opacity: 0.8;
     display: inline-block;
     margin-right: 10px;
@@ -70,7 +70,7 @@
 }
 
 .utilsButton p {
-    color: var(--writing_disease);
+    color:#565472;
     margin-top: 2px;
     font-size: 13px;
 }

@@ -32,6 +32,8 @@ import {
   MatTableModule
 } from "@angular/material";
 import {FlexLayoutModule} from "@angular/flex-layout";
+import {DialogComponent} from "./dialog_component/dialog_component";
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 @NgModule({
@@ -39,7 +41,8 @@ import {FlexLayoutModule} from "@angular/flex-layout";
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    BorderToolsComponent
+    BorderToolsComponent,
+    DialogComponent
   ],
   imports: [
     FlexLayoutModule,
@@ -57,6 +60,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
     FormsModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    MatDialogModule,
     ToastrModule.forRoot({
       timeOut: 2000,
       positionClass: 'toast-top-left',
@@ -71,6 +75,9 @@ import {FlexLayoutModule} from "@angular/flex-layout";
     AuthenticationService,
     AuthGuard,
     MakeToastrService
+  ],
+  entryComponents:[
+    DialogComponent
   ],
   bootstrap: [AppComponent]
 })
