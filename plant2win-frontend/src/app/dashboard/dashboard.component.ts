@@ -14,13 +14,30 @@ export class DashboardComponent {
 
   public loading_screen = false;
   public started_upload = false;
+  public nfts;
 
   constructor(public _global: GlobalService, public _toastrService: MakeToastrService, public dialog: MatDialog) {
     this.started_upload = false;
+    this._global.GetNFTs().subscribe(
+      (data) => {
+        console.log(data);
+        this.nfts = data;
+      }, (error) => {
+        console.log(error)
+      }
+    )
   }
 
   openDialog() {
     this.dialog.open(DialogComponent);
+  }
+
+  GetLatestPrice(prices) {
+    let latest_price = 0;
+    for (var price of prices) {
+      latest_price = price['price']
+    }
+    return latest_price
   }
 
 }
