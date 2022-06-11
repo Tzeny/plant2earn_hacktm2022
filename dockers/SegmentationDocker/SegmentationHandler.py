@@ -134,7 +134,7 @@ class MakeLandscape():
             img = Image.fromarray(img)
         return img
 
-class ChexNetBoundingBoxHandler:
+class SegmentationHandler:
     def __init__(self, model_path):
         cfg = get_cfg()
         cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"))
