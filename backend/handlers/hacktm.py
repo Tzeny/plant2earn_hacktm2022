@@ -8,6 +8,7 @@ from handlers.handler import Handler
 from json import JSONDecodeError
 from utils import json_response
 from connection import rabbitmq_connection as rmq
+from models.RMQModels import AlgorithmExchangeMessage
 
 from PIL import Image
 from io import BytesIO
@@ -38,14 +39,70 @@ class HacktmHandler(Handler):
             os.makedirs(request_dir)
 
         img_path = f'{request_dir}/img.jpeg'
+        img_id = str(uuid.uuid4())
         img.save(img_path)
 
         xray_doc = {
-            'id':  str(uuid.uuid4()),
-            'time': date.today().strftime("%Y-%m-%d")
+            'id':  img_id,
+            'time': date.today().strftime("%Y-%m-%d"),
+            'path': img_path
         }
 
         await self.db_connection.save_to_db('segmentation_entries', xray_doc)
+
+        message = AlgorithmExchangeMessage(img_path=img_path, id=img_id)
+        await rmq.publish_message(exchange_name='leaf_segmentation_exchange', message=message.get_json(), env=self.env)
+
+        return {
+            'bbox_image': 'url',
+            'black_image': 'url',
+            'leaf_class':
+        }
+
+    # def detect_tree():
+    #     in {
+    #         'image': 'base64'
+    #     }
+
+    #     return {
+    #         'coord_copac': [x1, y1, x2, y2],
+    #         'coord_om': [x1, y1, x2, y2],
+    #         'bbox_image': 'url'
+    #     }
+
+    # def generate_nft():
+    #     in {
+    #         'geolocation':
+    #         'tree_type': 
+    #         'tree_age': 
+    #     }
+
+    #     // calculate  co2_absorbtion
+    #     // generate+save image
+    #     // create contract
+    #     // insert into db
+
+    #     // nft
+    #     {
+    #         'id': ,
+    #         'username': ,
+    #         'nft_image': ,
+    #         'forest_name': ,
+    #         'price': [
+    #             {
+    #                 'timestamp': <time>,
+    #                 'price': <price>
+    #             }
+    #         ]
+    #         'creation_time': ,
+    #         'co2_absorbtion': ,
+    #     }
+
+    #     return {
+    #         'nft_image': 'url',
+    #         'nft_hast': ,
+    #         'co2_absorbtion'
+    #     }
 
         # message = PreprocessExchange(user=username, xray_path=image_path, id=xray_id, token=token,
         #                                      study_time=current_time, isCron=True)

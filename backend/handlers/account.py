@@ -25,9 +25,7 @@ class AccountHandler(Handler):
         # normal for pacs
         # index at which to split the request for login
         # different on cloud vs pacs
-        self.index = 4
-        if 'cloud' in backend_type:
-            self.index = 3
+        self.index = 3
 
     async def auth_middleware(self, app, handler):
         async def middleware(request):
@@ -69,9 +67,6 @@ class AccountHandler(Handler):
             logger.info('Bad Request! User ' + username + ' tried to log in.')
             return json_response({'message': 'Wrong username or password'}, status=401)
 
-        if not user_data['mail_confirmation']:
-            return json_response({'message': 'You should confirm your mail first!'}, status=401)
-
         payload = {
             'user_id': user._id,
             'username': username,
@@ -84,8 +79,6 @@ class AccountHandler(Handler):
             'expires_in': JWT_EXP_DELTA_SECONDS,
             'username': username,
             'name': user_data['name'],
-            'limit': user_data['limit'],
-            'role': user_data['role']
         }
         return json_response(user_info)
 

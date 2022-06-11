@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
     heatmap_handler = SegmentationHandler(model_path)
 
-    queue_name = f'segmentation_queue'
+    queue_name = f'leaf_segmentation_exchange'
 
     if ENV == 'dev':
         from tqdm import tqdm
