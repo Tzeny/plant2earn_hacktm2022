@@ -26,6 +26,7 @@ RUN mkdir -p /TreeDetection/Local/Models
 
 COPY ./TreeDetectionDocker/* /TreeDetection/
 COPY ./common/ /TreeDetection
+COPY ./ai_models/TreeDetectionDocker/ /TreeDetection/models/
 RUN true
 
 CMD python3 ./TreeDetection.py

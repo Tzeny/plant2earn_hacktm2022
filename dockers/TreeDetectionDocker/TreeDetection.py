@@ -7,10 +7,12 @@ import os
 import time
 import pickle
 
+logging.basicConfig(level=logging.INFO)
+
 import torch
 
 from TreeDetectionHandler import TreeDetectionHandler
-from models.AlgorithmsAnswear import SegmentationAnswer
+from models.AlgorithmsAnswear import TreeDetectionAnswer
 
 import pandas as pd
 import glob
@@ -22,41 +24,36 @@ model_path = "/Segmentation/models/model.pth"
 async def process_queue(queue):
     async for message in queue:
         with message.process():
+            a = time.time()
             logging.info('Segmentation Starting analysis' + str(datetime.datetime.now()))
 
             data = json.loads(message.body)
-            xray_path = data['xray_path']
-            heat_path = xray_path.replace('processed', 'leaf_segmentation')
-            if not os.path.isdir(os.path.dirname(heat_path)):
-                try:
-                    os.makedirs(os.path.dirname(heat_path))
-                except FileExistsError:
-                    pass
+            img_path = data['img_path']
 
-            logging.info(f"Radiography {data['id']} starting analysis...")
-            if os.path.isfile(xray_path):
+            logging.info(f"{data['id']} starting analysis...")
+            if os.path.isfile(img_path):
                 # predict on image
-                heatmap_handler.segment_leaf(xray_path, f'{heat_path}/1.jpeg', f'{heat_path}/2.jpeg')
+                bbox_path = f'{data["output_dir"]}/tree_detection.jpg'
 
-                logging.info(f"{data['id']} finishing analysis...")
+                output = heatmap_handler.detect_tree(img_path, bbox_path)
+                message = TreeDetectionAnswer(id=data['id'], bbox_path=bbox_path, coord_om=output['coord_om'], coord_copac=output['coord_copac'])
 
-                message = SegmentationAnswer(answer_type=1)
-
-                await rmq.publish_message(exchange_type='ensemble', message=message.get_json())
-                logging.debug(f"Radiography {data['id']} message sent to rabbitmq...")
+                await rmq.publish_message(exchange_type='backend_process', message=message.get_json())
+                logging.info(f"{data['id']} message sent to rabbitmq, total time: {time.time() - a:.2f}s")
             else:
-                logging.info(f"Could not process {data['id']}, file missing from {xray_path}...")
+                logging.info(f"Could not process {data['id']}, file missing from {img_path}...")
 
 
 if __name__ == "__main__":
     from rabbitmq_connection import RabbitMQHandler
 
     global rmq
-    ENV = os.environ['ENV']
+    ENV = os.environ.get('ENV', 'default')
 
+    logging.info(f'Loading handler')
     heatmap_handler = TreeDetectionHandler(model_path)
 
-    queue_name = f'segmentation_queue'
+    queue_name = f'tree_detection_queue'
 
     if ENV == 'dev':
         from tqdm import tqdm
@@ -68,16 +65,12 @@ if __name__ == "__main__":
         input_images = [d for d in glob.glob(f'{input_dir}/*') if os.path.isfile(d)]
 
         for ii in tqdm(input_images):
-            output, output_visualization = heatmap_handler.detect_tree(ii)
             output_basepath = f'{output_dir}/{os.path.basename(ii)}'
 
-            with open(f'{output_basepath}.pkl', 'wb') as file:
-                pickle.dump(output, file)
- 
-            output_visualization.save(f'{output_basepath}.jpg')
-
+            output = heatmap_handler.detect_tree(ii, f'{output_basepath}_vis.jpg')
             print(f'Output for {ii}: {output}')
     else:
+        logging.info(f'Starting rabbit')
         rmq = RabbitMQHandler(ENV)
         loop = asyncio.get_event_loop()
         consume_queue = loop.run_until_complete(rmq.start_connection(queue_type=queue_name))

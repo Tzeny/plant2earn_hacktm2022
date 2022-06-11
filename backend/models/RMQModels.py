@@ -13,9 +13,10 @@ class AlgorithmExchangeMessage():
     def get_json(self):
         return json.dumps(self.__dict__).encode('utf8')
 
-    def __init__(self, img_path, id):
+    def __init__(self, img_path, id, output_dir):
         self.id = id
         self.img_path = img_path
+        self.output_dir = output_dir
 
 class AlgorithmResponse:
     def create_message(self, data, message_path=None, is_fetch_request=False):
