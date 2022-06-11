@@ -49,7 +49,7 @@ s3:
   radiologist_label: label_data
 
 fs:
-  file_system_path_default: /dataimages/
+  file_system_path_default: /dataimages/data/
 
 mongodb:
   ip_default: mongodb
