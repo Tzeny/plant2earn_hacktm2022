@@ -9,13 +9,24 @@
 /* Begin PBXBuildFile section */
 		F817C5772853C6AF0046C929 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5762853C6AF0046C929 /* AppDelegate.swift */; };
 		F817C5792853C6AF0046C929 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5782853C6AF0046C929 /* SceneDelegate.swift */; };
-		F817C57B2853C6AF0046C929 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C57A2853C6AF0046C929 /* ViewController.swift */; };
 		F817C57E2853C6AF0046C929 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F817C57C2853C6AF0046C929 /* Main.storyboard */; };
 		F817C5802853C6B50046C929 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F817C57F2853C6B50046C929 /* Assets.xcassets */; };
 		F817C5832853C6B50046C929 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F817C5812853C6B50046C929 /* LaunchScreen.storyboard */; };
 		F817C58E2853C6B60046C929 /* Plant2WinTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C58D2853C6B60046C929 /* Plant2WinTests.swift */; };
 		F817C5982853C6B60046C929 /* Plant2WinUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5972853C6B60046C929 /* Plant2WinUITests.swift */; };
 		F817C59A2853C6B60046C929 /* Plant2WinUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5992853C6B60046C929 /* Plant2WinUITestsLaunchTests.swift */; };
+		F817C5A82853D3660046C929 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5A72853D3660046C929 /* SignUpViewController.swift */; };
+		F817C5AA2853D3780046C929 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5A92853D3780046C929 /* MainMenuViewController.swift */; };
+		F817C5AC2853D3F70046C929 /* PlantTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5AB2853D3F70046C929 /* PlantTreeViewController.swift */; };
+		F817C5AE2853D4E00046C929 /* ForestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5AD2853D4E00046C929 /* ForestViewController.swift */; };
+		F817C5B32853D64C0046C929 /* FaceIDLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5B22853D64C0046C929 /* FaceIDLogin.swift */; };
+		F817C5B52853E3230046C929 /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5B42853E3230046C929 /* SignUp.swift */; };
+		F817C5B72853F6530046C929 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5B62853F6530046C929 /* CameraController.swift */; };
+		F817C5B92853F7650046C929 /* CVPixelBufferExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5B82853F7650046C929 /* CVPixelBufferExtension.swift */; };
+		F817C5BB2853FB300046C929 /* LivenessController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5BA2853FB300046C929 /* LivenessController.swift */; };
+		F817C5BD2853FC2B0046C929 /* LivenessGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5BC2853FC2B0046C929 /* LivenessGuard.swift */; };
+		F817C5BF285402C30046C929 /* FaceDetectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F817C5BE285402C30046C929 /* FaceDetectionController.swift */; };
+		F8E241132854914400A6BA3E /* SelfieVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E241122854914400A6BA3E /* SelfieVerificationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +50,6 @@
 		F817C5732853C6AF0046C929 /* Plant2Win.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plant2Win.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F817C5762853C6AF0046C929 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F817C5782853C6AF0046C929 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		F817C57A2853C6AF0046C929 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F817C57D2853C6AF0046C929 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F817C57F2853C6B50046C929 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F817C5822853C6B50046C929 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -49,6 +59,18 @@
 		F817C5932853C6B60046C929 /* Plant2WinUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Plant2WinUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F817C5972853C6B60046C929 /* Plant2WinUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plant2WinUITests.swift; sourceTree = "<group>"; };
 		F817C5992853C6B60046C929 /* Plant2WinUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plant2WinUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		F817C5A72853D3660046C929 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		F817C5A92853D3780046C929 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
+		F817C5AB2853D3F70046C929 /* PlantTreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantTreeViewController.swift; sourceTree = "<group>"; };
+		F817C5AD2853D4E00046C929 /* ForestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForestViewController.swift; sourceTree = "<group>"; };
+		F817C5B22853D64C0046C929 /* FaceIDLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceIDLogin.swift; sourceTree = "<group>"; };
+		F817C5B42853E3230046C929 /* SignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
+		F817C5B62853F6530046C929 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
+		F817C5B82853F7650046C929 /* CVPixelBufferExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVPixelBufferExtension.swift; sourceTree = "<group>"; };
+		F817C5BA2853FB300046C929 /* LivenessController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LivenessController.swift; sourceTree = "<group>"; };
+		F817C5BC2853FC2B0046C929 /* LivenessGuard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LivenessGuard.swift; sourceTree = "<group>"; };
+		F817C5BE285402C30046C929 /* FaceDetectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceDetectionController.swift; sourceTree = "<group>"; };
+		F8E241122854914400A6BA3E /* SelfieVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfieVerificationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +123,10 @@
 			children = (
 				F817C5762853C6AF0046C929 /* AppDelegate.swift */,
 				F817C5782853C6AF0046C929 /* SceneDelegate.swift */,
-				F817C57A2853C6AF0046C929 /* ViewController.swift */,
+				F817C5AF2853D5070046C929 /* Model */,
+				F817C5B12853D51F0046C929 /* Controller */,
+				F817C5B02853D50D0046C929 /* View */,
+				F817C5A62853D2AF0046C929 /* ViewControllers */,
 				F817C57C2853C6AF0046C929 /* Main.storyboard */,
 				F817C57F2853C6B50046C929 /* Assets.xcassets */,
 				F817C5812853C6B50046C929 /* LaunchScreen.storyboard */,
@@ -125,6 +150,46 @@
 				F817C5992853C6B60046C929 /* Plant2WinUITestsLaunchTests.swift */,
 			);
 			path = Plant2WinUITests;
+			sourceTree = "<group>";
+		};
+		F817C5A62853D2AF0046C929 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				F817C5A72853D3660046C929 /* SignUpViewController.swift */,
+				F817C5A92853D3780046C929 /* MainMenuViewController.swift */,
+				F817C5AB2853D3F70046C929 /* PlantTreeViewController.swift */,
+				F817C5AD2853D4E00046C929 /* ForestViewController.swift */,
+				F8E241122854914400A6BA3E /* SelfieVerificationViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		F817C5AF2853D5070046C929 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F817C5BC2853FC2B0046C929 /* LivenessGuard.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		F817C5B02853D50D0046C929 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F817C5B12853D51F0046C929 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F817C5BE285402C30046C929 /* FaceDetectionController.swift */,
+				F817C5BA2853FB300046C929 /* LivenessController.swift */,
+				F817C5B82853F7650046C929 /* CVPixelBufferExtension.swift */,
+				F817C5B62853F6530046C929 /* CameraController.swift */,
+				F817C5B22853D64C0046C929 /* FaceIDLogin.swift */,
+				F817C5B42853E3230046C929 /* SignUp.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,8 +323,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F817C57B2853C6AF0046C929 /* ViewController.swift in Sources */,
+				F817C5B72853F6530046C929 /* CameraController.swift in Sources */,
+				F817C5AA2853D3780046C929 /* MainMenuViewController.swift in Sources */,
+				F817C5B32853D64C0046C929 /* FaceIDLogin.swift in Sources */,
 				F817C5772853C6AF0046C929 /* AppDelegate.swift in Sources */,
+				F817C5BF285402C30046C929 /* FaceDetectionController.swift in Sources */,
+				F817C5A82853D3660046C929 /* SignUpViewController.swift in Sources */,
+				F817C5B92853F7650046C929 /* CVPixelBufferExtension.swift in Sources */,
+				F817C5BD2853FC2B0046C929 /* LivenessGuard.swift in Sources */,
+				F817C5AE2853D4E00046C929 /* ForestViewController.swift in Sources */,
+				F817C5BB2853FB300046C929 /* LivenessController.swift in Sources */,
+				F817C5B52853E3230046C929 /* SignUp.swift in Sources */,
+				F8E241132854914400A6BA3E /* SelfieVerificationViewController.swift in Sources */,
+				F817C5AC2853D3F70046C929 /* PlantTreeViewController.swift in Sources */,
 				F817C5792853C6AF0046C929 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
