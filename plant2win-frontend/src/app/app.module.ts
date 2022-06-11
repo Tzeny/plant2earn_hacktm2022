@@ -1,13 +1,14 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
 import {HttpClientModule} from '@angular/common/http';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {LoginComponent} from './login/login.component';
 import {FormsModule} from '@angular/forms';
-import {  ToastrModule,
+import {
+  ToastrModule,
   ToastNoAnimation,
   ToastNoAnimationModule
 } from 'ngx-toastr';
@@ -16,7 +17,7 @@ import {AuthenticationService} from './services/authentication/authentication.se
 import {GlobalService} from './services/global.service';
 import {AuthGuard} from './services/authentication/auth.guard';
 import {MakeToastrService} from './services/toastr.service';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
 import {BorderToolsComponent} from "./border_tools/border.tools.component";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
@@ -34,6 +35,7 @@ import {
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {DialogComponent} from "./dialog_component/dialog_component";
 import {MatDialogModule} from "@angular/material/dialog";
+import {ChartsModule} from "ng2-charts";
 
 
 @NgModule({
@@ -51,6 +53,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     MatIconModule,
     MatInputModule,
     MatListModule,
+    ChartsModule,
+    FormsModule,
     MatSelectModule,
     MatSidenavModule,
     MatCardModule,
@@ -76,9 +80,10 @@ import {MatDialogModule} from "@angular/material/dialog";
     AuthGuard,
     MakeToastrService
   ],
-  entryComponents:[
+  entryComponents: [
     DialogComponent
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
