@@ -1,24 +1,45 @@
 <div id="no_login_background" xmlns="http://www.w3.org/1999/html">
-  <div class="loginInfo">
-    <div class="logo"></div>
-    <div class="insideButtons" style="max-width: 100%;">
-      <div class="loginForm" style="display: inline-block" #myEmail>
-        <div class="group">
-          <input type="text" class="login-input" autocomplete=off [(ngModel)]="username" required>
-          <span class="highlight"></span>
-          <span class="bar"></span>
-          <label class="login-label">EmailAddress</label>
+  <div class="container-login100">
+    <div class="wrap-login100">
+      <div class="logo"></div>
+      <form class="login100-form validate-form">
+        <span class="login100-form-title p-b-48"><i class="zmdi zmdi-font"></i></span>
+        <div class="wrap-input100 validate-input" data-validate="Valid email is: a@b.c">
+          <input autocomplete=off class="input100" type="text" name="email" [(ngModel)]="username">
+          <span class="focus-input100" data-placeholder="Email"></span>
         </div>
-        <div class="group">
-          <input type="text" class="login-input" autocomplete=off type="password" [(ngModel)]="password" required>
-          <span class="highlight"></span>
-          <span class="bar"></span>
-          <label class="login-label">Password</label>
+        <div class="wrap-input100 validate-input" data-validate="Enter password">
+          <span class="btn-show-pass"><i class="zmdi zmdi-eye"></i></span>
+          <input autocomplete=off class="input100" type="password" name="pass" [(ngModel)]="password">
+          <span class="focus-input100" data-placeholder="Password"></span>
         </div>
-        <div class="roundButton" style="margin-top: 50%;" (click)="Login()">
-          <p>Enter Account</p>
+        <div class="container-login100-form-btn">
+          <div class="wrap-login100-form-btn">
+            <div class="login100-form-bgbtn"></div>
+            <button style="background-color: #149712" class="login100-form-btn" (click)="Login()">
+              Login
+            </button>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
-</div>l
+</div>
+<!--      <div class="loginForm" style="display: inline-block" #myEmail>-->
+<!--        <div class="group">-->
+<!--          <input type="text" class="login-input" autocomplete=off [(ngModel)]="username" required>-->
+<!--          <span class="highlight"></span>-->
+<!--          <span class="bar"></span>-->
+<!--          <label class="login-label">EmailAddress</label>-->
+<!--        </div>-->
+<!--        <div class="group">-->
+<!--          <input type="text" class="login-input" autocomplete=off type="password" [(ngModel)]="password" required>-->
+<!--          <span class="highlight"></span>-->
+<!--          <span class="bar"></span>-->
+<!--          <label class="login-label">Password</label>-->
+<!--        </div>-->
+<!--        <div class="roundButton" style="margin-top: 10%;" (click)="Login()">-->
+<!--          <p>Enter Account</p>-->
+<!--        </div>-->
+<!--      </div>-->
+

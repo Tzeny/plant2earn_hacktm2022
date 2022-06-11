@@ -157,7 +157,8 @@ body > div > div.dropdown.open {
 
 
 #no_login_background {
-  background: var(--backround_theme) url("/assets/login/pattern.png") no-repeat center;
+  /*background: #f7f6f2 url("/assets/login/pattern.png") no-repeat center;*/
+  background-color: #fbfcff ;
   background-size: cover;
   height: 100%;
   width: 100%;
@@ -187,15 +188,15 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 }
 
 .roundButton {
-  width: 50%;
+  idth: 50%;
   cursor: pointer;
   position: relative;
-  /*height: 100%;*/
-  border: 2px solid white;
-  border-radius: 100px;
+  border: 2px solid #1e1e1e;
+  border-radius: 3px;
+  width: 80%;
   margin: auto;
   text-align: center;
-  color: white;
+  color: #2b2b2b;
 }
 
 .roundButton p {
@@ -1226,20 +1227,23 @@ a.list-group-item, button.list-group-item {
   display: inline-block;
   overflow: hidden;
   cursor: pointer;
-  border-color: #00A2D7;
+  border-color: #575757;
   border-style: solid;
   border-width: 1px;
-  width: 49%;
+  width: 98%;
   margin-right: 2%;
-  border-radius: 5px;
   font-family: 'HelveticaNeue-Roman', sans-serif;
-  color: #C7F0FD;
+  color: #575757;
   text-align: center;
-  background-color: var(--backround_theme);
 }
 
 .filterButton:hover {
-  background-color: #00A2D7;
+  background-color: #cccccc;
+}
+.filterButton p {
+  margin-top:5px;
+  margin-bottom: 5px;
+  font-size: 14px;
 }
 
 

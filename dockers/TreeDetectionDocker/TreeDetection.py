@@ -9,7 +9,7 @@ import pickle
 
 import torch
 
-from SegmentationHandler import SegmentationHandler
+from TreeDetectionHandler import TreeDetectionHandler
 from models.AlgorithmsAnswear import SegmentationAnswer
 
 import pandas as pd
@@ -54,20 +54,29 @@ if __name__ == "__main__":
     global rmq
     ENV = os.environ['ENV']
 
-    heatmap_handler = SegmentationHandler(model_path)
+    heatmap_handler = TreeDetectionHandler(model_path)
 
     queue_name = f'segmentation_queue'
 
     if ENV == 'dev':
         from tqdm import tqdm
+        import pickle
+
         input_dir = os.environ['INPUT_DIR']
         output_dir = os.environ['OUTPUT_DIR']
 
         input_images = [d for d in glob.glob(f'{input_dir}/*') if os.path.isfile(d)]
 
         for ii in tqdm(input_images):
+            output, output_visualization = heatmap_handler.detect_tree(ii)
             output_basepath = f'{output_dir}/{os.path.basename(ii)}'
-            heatmap_handler.segment_leaf(ii, f'{output_basepath}_1.jpeg', f'{output_basepath}_2.jpeg')
+
+            with open(f'{output_basepath}.pkl', 'wb') as file:
+                pickle.dump(output, file)
+ 
+            output_visualization.save(f'{output_basepath}.jpg')
+
+            print(f'Output for {ii}: {output}')
     else:
         rmq = RabbitMQHandler(ENV)
         loop = asyncio.get_event_loop()
