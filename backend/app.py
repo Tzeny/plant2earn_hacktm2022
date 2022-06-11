@@ -36,7 +36,7 @@ if __name__ == "__main__":
     account_handler = AccountHandler(place, backend_type, db_connection)
     hacktm_handler = HacktmHandler(place, db_connection)
 
-    api = web.Application(middlewares=[account_handler.auth_middleware])
+    api = web.Application()
 
     # setup server and routes
 
@@ -46,31 +46,14 @@ if __name__ == "__main__":
     api.router.add_route('POST', '/register', account_handler.register)
 
     api.router.add_route('POST', '/hacktm/leaf', hacktm_handler.segment_leaf)
-    api.router.add_route('POST', '/hacktm/nft/retrieve', hacktm_handler.retrieve_latest_nfts)
+    api.router.add_route('GET', '/hacktm/nft/retrieve', hacktm_handler.retrieve_latest_nfts)
 
     ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
     ssl_context.load_cert_chain('nginx/ssl_keys/domain_srv.crt', 'nginx/ssl_keys/domain_srv.key')
 
     aio_logger.info('Adding ssl context...')
 
-    if backend_type == 'pacs':
-        app = web.Application(middlewares=[account_handler.auth_middleware])
-        app.add_subapp("/api-backend/", api)
-        # Configure default CORS settings.
-        cors = aiohttp_cors.setup(app, defaults={
-            "*": aiohttp_cors.ResourceOptions(
-                allow_credentials=True,
-                expose_headers="*",
-                allow_headers="*",
-            )
-        })
-
-        # Configure CORS on all routes.
-        for route in list(app.router.routes()):
-            cors.add(route)
-        aio_logger.info('Adding cors filters for all routes...')
-    else:
-        app = api
+    app = api
     aio_logger.info(f'Application started on ip: {APP_IP} with port: {APP_PORT}...')
 
     web.run_app(app, host=APP_IP, port=APP_PORT)
