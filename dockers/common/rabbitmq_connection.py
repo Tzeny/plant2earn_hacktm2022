@@ -22,6 +22,7 @@ class RabbitMQHandler:
             logging.exception("Oooops...")
 
     async def start_connection(self, queue_type, add_callback=False):
+        logging.info(f"Connecting to RabbitMQ {queue_type}...")
         connection_link = \
             str(config['RabbitMQ']['user']) + ":" + str(config['RabbitMQ']['password']) + \
             '@' + str(self.RABBIT_IP) + '/'
@@ -31,10 +32,10 @@ class RabbitMQHandler:
             connection.add_close_callback(self.on_connection_closed)
         await self.channel.set_qos(prefetch_count=1)
         logging.info(f"Connection to RabbitMQ {queue_type} established!")
-        return await self.channel.declare_queue(config['RabbitMQ'][queue_type], durable=True, auto_delete=False)
+        return await self.channel.declare_queue(queue_type, durable=True, auto_delete=False)
 
     async def publish_message(self, exchange_type, message=None):
-        exchange_name = config['RabbitMQ'][exchange_type + '_process']
+        exchange_name = exchange_type
         message = Message(message)
         exchange = await self.channel.declare_exchange(
             exchange_name,

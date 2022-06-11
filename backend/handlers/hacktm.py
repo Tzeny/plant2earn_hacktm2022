@@ -22,7 +22,7 @@ from multiprocessing import Lock
 logger = logging.getLogger('aiohttp')
 
 class HacktmHandler(Handler):
-    def __init__(self, env, db_connection):
+    def __init__(self, env, db_connection, config):
         super(HacktmHandler, self).__init__(env, db_connection)
         self.env = env
         self.db_connection = db_connection
@@ -30,13 +30,27 @@ class HacktmHandler(Handler):
         self.answer_dict = {}
         self.answer_dict_lock = Lock()
 
+        loop = asyncio.get_event_loop()
+
+        # get config if listen, send to cloud
+        self.rmq_config = config['RabbitMQ'].get(self.env, config['RabbitMQ']['default_options'])
+        logger.info('Diagnosis Handler configured...')
+        if self.rmq_config['listen']:
+            loop.create_task(
+                self.process_algorithms_queue_thread(
+                    loop.run_until_complete(rmq.init(env, 'ai_algorithms_response'))
+                )
+            )
+
+        # loop.run_forever()
+
     async def process_algorithms_queue_thread(self, queue):
         logger.info('Listening for message in queue')
 
         answers_dict = {
             1: 'leaf_segmentation',
-            2: 'tree_classification',
-            3: 'leaf_classification'
+            2: 'tree_detection',
+            3: 'tree_classification'
         }
 
         async for message in queue:
@@ -50,16 +64,25 @@ class HacktmHandler(Handler):
                     continue
 
                 with self.answer_dict_lock:
-                    if data['id'] not in self.answer_dict_lock:
-                        self.answer_dict_lock[data['id']] = {}
+                    if data['id'] not in self.answer_dict:
+                        self.answer_dict[data['id']] = {}
 
-                    self.answer_dict[data['id']][answers_dict[at]] = {
-                        'bbox_path': data['bbox_path'],
-                        'leaf_path': data['leaf_path'],
-                    }
+                    if at == 1:
+                        self.answer_dict[data['id']][answers_dict[at]] = {
+                            'bbox_path': data['bbox_path'],
+                            'black_image': data['leaf_path'],
+                        }
+                    elif at == 2:
+                        self.answer_dict[data['id']][answers_dict[at]] = {
+                            'coord_om': data['coord_om'],
+                            'coord_copac': data['coord_copac'],
+                            # 'bbox_path': data['bbox_path'],
+                        }
+
+                    logger.info(f'Received message: {self.answer_dict}')
                     
 
-    async def segment_leaf(self, request):
+    async def detect_tree(self, request):
         img_id = str(uuid.uuid4())
 
         a = time.time()
@@ -70,11 +93,11 @@ class HacktmHandler(Handler):
             image_uploaded = await reader.next()
 
             if image_uploaded is None:
-                raise ValueError(f'No images in the request')
+                raise ValueError(f'{img_id}: No images in the request')
 
             # # check if file filed exist
             if 'file' not in image_uploaded.name:
-                raise AttributeError('Wrong field name for part')
+                raise AttributeError(f'{img_id}: Wrong field name for part')
 
             current_time = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
             request_dir = os.path.join(self.FS_PATH, current_time + '/')
@@ -95,40 +118,98 @@ class HacktmHandler(Handler):
             logger.exception(f'Error receiving image')
             return json_response({'message': f'Error receiving image: {e}'}, status=400)
 
-        leaf_doc = {
-            'id':  img_id,
-            'time': date.today().strftime("%Y-%m-%d"),
-            'path': img_path,
-        }
+        # leaf_doc = {
+        #     'id':  img_id,
+        #     'time': date.today().strftime("%Y-%m-%d"),
+        #     'path': img_path,
+        # }
 
         # await self.db_connection.save_to_db('segmentation_entries', leaf_doc)
         # logging.info(f'{img_id} saved in db')
 
-        # message = AlgorithmExchangeMessage(img_path=img_path, id=img_id)
-        # await rmq.publish_message(exchange_name='leaf_segmentation_exchange', message=message.get_json(), env=self.env)
-        # logging.info(f'{img_id} sent to rabbit')
+        logger.info(f'{img_id} trying to send to rabbit')
+        message = AlgorithmExchangeMessage(img_path=img_path, id=img_id, output_dir=request_dir)
+        await rmq.publish_message(exchange_name='tree_detection_exchange', message=message.get_json(), env=self.env)
+        logger.info(f'{img_id} sent to rabbit')
 
-        # while True:
-        #     time.sleep(1)
-        #     with self.answer_dict_lock:
-        #         if 'leaf_segmentation' in self.answer_dict.get(img_id, {}):
-        #             return json_response({
-        #                 'coord_copac': [100, 100, 300, 300],
-        #                 'coord_om': [50, 50, 500, 500],
-        #                 'bbox_image': 'https://file.plant2win.com/2022-06-11_21-17-49/nft.png'
-        #             }, status=200)
+        a = time.time()
+        while True:
+            await asyncio.sleep(1)
+            with self.answer_dict_lock:
+                if 'tree_detection' in self.answer_dict.get(img_id, {}):
+                    logger.info(f'Detect Tree done in {time.time() - a:.2f}s')
+                    self.answer_dict[img_id]['tree_detection']['bbox_image'] = f'https://file.plant2win.com/{current_time}/tree_detection.jpg'
+                    return json_response(self.answer_dict[img_id]['tree_detection'],  status=200)
+                else:
+                    logger.info(f'Tree detection not yet in dict')
+            if time.time() - a > 15:
+                return json_response({'message': f'Timeout whilst processing image'}, status=400)
 
-        # return {
-        #     'bbox_image': 'url',
-        #     'black_image': 'url',
-        #     'leaf_class':
-        # }
-        # return json_response({'message': f'Ok'}, status=200)
-        return json_response({
-            'coord_copac': [100, 100, 300, 300],
-            'coord_om': [50, 50, 500, 500],
-            'bbox_image': 'https://file.plant2win.com/2022-06-11_21-17-49/nft.png'
-        }, status=200)
+    async def segment_leaf(self, request):
+        img_id = str(uuid.uuid4())
+
+        a = time.time()
+        try:
+            reader = await request.multipart()
+            logger.info(f'Received requests {img_id}')
+
+            image_uploaded = await reader.next()
+
+            if image_uploaded is None:
+                raise ValueError(f'{img_id}: No images in the request')
+
+            # # check if file filed exist
+            if 'file' not in image_uploaded.name:
+                raise AttributeError(f'{img_id}: file wrong field name for part')
+
+            current_time = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+            request_dir = os.path.join(self.FS_PATH, current_time + '/')
+            img_path = f'{request_dir}/img.jpeg'
+
+            if not os.path.isdir(request_dir):
+                os.makedirs(request_dir)
+
+            with open(f'{img_path}', 'wb') as f:
+                while True:
+                    chunk = await image_uploaded.read_chunk(size=8192)
+                    if not chunk:
+                        break
+                    f.write(chunk)
+
+            lat = await reader.next()
+            if 'lat' not in lat.name:
+                raise AttributeError(f'{img_id}: lat wrong field name for part')
+            
+            lat = await lat.read()
+
+            long = await reader.next()
+            if 'long' not in long.name:
+                raise AttributeError(f'{img_id}: long wrong field name for part')
+            
+            long = await long.read()
+
+            logger.info(f"{img_id}: Image from {image_uploaded.name} uploaded to {img_path} in {time.time() - a:.2f}s")
+        except Exception as e:
+            logger.exception(f'Error receiving image')
+            return json_response({'message': f'Error receiving image: {e}'}, status=400)
+
+        logger.info(f'{img_id} trying to send to rabbit')
+        message = AlgorithmExchangeMessage(img_path=img_path, id=img_id, output_dir=request_dir)
+        await rmq.publish_message(exchange_name='leaf_segmentation_exchange', message=message.get_json(), env=self.env)
+        logger.info(f'{img_id} sent to rabbit')
+
+        a = time.time()
+        while True:
+            await asyncio.sleep(1)
+            with self.answer_dict_lock:
+                if 'leaf_segmentation' in self.answer_dict.get(img_id, {}):
+                    logger.info(f'Leaf seg done in {time.time() - a:.2f}s')
+                    # self.answer_dict[img_id]['leaf_segmentation']['bbox_image'] = f'https://file.plant2win.com/{current_time}/leaf_segmentation.jpg'
+                    return json_response(self.answer_dict[img_id]['leaf_segmentation'],  status=200)
+                else:
+                    logger.info(f'Tree detection not yet in dict')
+            if time.time() - a > 15:
+                return json_response({'message': f'Timeout whilst processing image'}, status=400)
 
     def json_response(body, **kwargs):
         kwargs['body'] = json.dumps(body or kwargs['body'], default=datetime_converter).encode(

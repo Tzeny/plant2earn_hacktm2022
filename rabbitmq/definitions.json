@@ -39,6 +39,15 @@
             "arguments": {}
         },
         {
+            "name": "tree_detection_exchange",
+            "vhost": "/",
+            "type": "fanout",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+        },
+        {
             "name": "tree_clasification_exchange",
             "vhost": "/",
             "type": "fanout",
@@ -65,6 +74,13 @@
             "arguments": {}
         },
         {
+            "name": "tree_detection_queue",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {}
+        },
+        {
             "name": "tree_classification_queue",
             "vhost": "/",
             "durable": true,
@@ -84,6 +100,14 @@
             "source": "leaf_segmentation_exchange",
             "vhost": "/",
             "destination": "leaf_segmentation_queue",
+            "destination_type": "queue",
+            "routing_key": "*",
+            "arguments": {}
+        },
+        {
+            "source": "tree_detection_exchange",
+            "vhost": "/",
+            "destination": "tree_detection_queue",
             "destination_type": "queue",
             "routing_key": "*",
             "arguments": {}
