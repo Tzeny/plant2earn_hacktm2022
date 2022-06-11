@@ -6,6 +6,6 @@ COPY ssl_keys/domain_srv.key /nginx/domain_srv.key
 
 #Delete the Existing default.conf
 RUN rm /etc/nginx/conf.d/default.conf
-COPY default.conf /nginx/
-RUN ls -l /nginx/
+COPY default.conf /etc/nginx/conf.d
+# RUN ls -l /nginx/
 #Copy the custom default.conf to the nginx configuration

@@ -12,7 +12,7 @@ export class GlobalService {
   public username: string;
 
   constructor(private _http: HttpClient) {
-    this.url = "https://api.xvision.app";
+    this.url = "https://api.plant2win.com";
   }
 }
 

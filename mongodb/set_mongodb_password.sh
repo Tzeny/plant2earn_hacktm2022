@@ -35,14 +35,14 @@ if [ "$MONGODB_APPLICATION_DATABASE" != "admin" ]; then
 echo "Using $MONGODB_APPLICATION_DATABASE database"
 use $MONGODB_APPLICATION_DATABASE
 db.createUser({user: '$MONGODB_APPLICATION_USER', pwd: '$MONGODB_APPLICATION_PASS', roles:[{role:'dbOwner', db:'$MONGODB_APPLICATION_DATABASE'}]})
-use xvision
+use plant2win
 db.users.insert({"username":"test","name":"Test","password":"d6a65e53e15d6e00fe0341ed844d848186e52e05f4b243a0a498112dca7e0097"})
 EOF
 fi
 
 mongo admin -u $MONGODB_ADMIN_USER -p $MONGODB_ADMIN_PASS << EOF
-echo "Using xvision database"
-use xvision
+echo "Using plant2win database"
+use plant2win
 db.users.insert({"username":"test","name":"Test","password":"d6a65e53e15d6e00fe0341ed844d848186e52e05f4b243a0a498112dca7e0097"})
 EOF
 
