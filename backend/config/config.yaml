@@ -42,6 +42,12 @@ jwt:
   JWT_ALGORITHM: HS256
   JWT_EXP_DELTA_SECONDS: 604800
 
+s3:
+  bucket_name: xvision-xray
+  xray: xray
+  radiologist_feedback: radiologist-feedback-masks
+  radiologist_label: label_data
+
 fs:
   file_system_path_default: /dataimages/
 

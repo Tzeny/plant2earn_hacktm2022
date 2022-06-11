@@ -8,7 +8,7 @@ from handlers.handler import Handler
 from json import JSONDecodeError
 from utils import json_response
 from connection import rabbitmq_connection as rmq
-from models.RMQModels import AlgorithmExchangeMessage
+from aiohttp import web
 
 from PIL import Image
 from io import BytesIO
@@ -88,6 +88,8 @@ class HacktmHandler(Handler):
                     if not chunk:
                         break
                     f.write(chunk)
+
+            logging.info(f"Image uploaded to {img_path}")
         except Exception as e:
             logger.exception(f'Error receiving image')
             return json_response({'message': f'Error receiving image: {e}'}, status=400)
@@ -100,9 +102,9 @@ class HacktmHandler(Handler):
             'path': img_path,
         }
 
-        await self.db_connection.save_to_db('segmentation_entries', leaf_doc)
+        # await self.db_connection.save_to_db('segmentation_entries', leaf_doc)
 
-        message = AlgorithmExchangeMessage(img_path=img_path, id=img_id)
+        # message = AlgorithmExchangeMessage(img_path=img_path, id=img_id)
         # await rmq.publish_message(exchange_name='leaf_segmentation_exchange', message=message.get_json(), env=self.env)
 
         # return {
@@ -111,6 +113,20 @@ class HacktmHandler(Handler):
         #     'leaf_class':
         # }
         return json_response({'message': f'Ok'}, status=200)
+
+    def json_response(body, **kwargs):
+        kwargs['body'] = json.dumps(body or kwargs['body'], default=datetime_converter).encode(
+            'utf-8')  # TODO: this fails on empty query results
+        kwargs['content_type'] = 'text/json'
+        return web.Response(**kwargs)
+
+    async def retrieve_latest_nfts(self,request):
+        nfts_answer = []
+        nfts = await self.db_connection.find('nfts', {'id':{'$exists':True}})
+        async for doc in nfts:
+            doc['_id'] = str(doc['_id'])
+            nfts_answer.append(doc)
+        return json_response(nfts_answer)
 
     # def detect_tree():
     #     in {
@@ -123,42 +139,42 @@ class HacktmHandler(Handler):
     #         'bbox_image': 'url'
     #     }
 
-    def generate_nft():
-        in {
-            'geolocation':
-            'tree_type': 
-            'tree_age': 
-        }
+    # def generate_nft():
+    #     in {
+    #         'geolocation':
+    #         'tree_type': 
+    #         'tree_age': 
+    #     }
 
-        // calculate  co2_absorbtion
-        // generate+save image
-        // create contract
-        // insert into db
+    #     // calculate  co2_absorbtion
+    #     // generate+save image
+    #     // create contract
+    #     // insert into db
 
-        // nft
-        {
-            'id': ,
-            'username': , + username address ETH + semnatura dinamica
-            'nft_image': ,
-            'ipfs_url': ,
-            'forest_name': ,
-            'price': [
-                {
-                    'timestamp': <time>,
-                    'price': <price>
-                }
-            ]
-            'creation_time': ,
-            'co2_absorbtion': ,
-        }
+    #     // nft
+    #     {
+    #         'id': ,
+    #         'username': , + username address ETH + semnatura dinamica
+    #         'nft_image': ,
+    #         'ipfs_url': ,
+    #         'forest_name': ,
+    #         'price': [
+    #             {
+    #                 'timestamp': <time>,
+    #                 'price': <price>
+    #             }
+    #         ]
+    #         'creation_time': ,
+    #         'co2_absorbtion': ,
+    #     }
 
-        return {
-            'nft_image': 'url',
-            'nft_hast': ,
-            'co2_absorbtion'
-        }
+    #     return {
+    #         'nft_image': 'url',
+    #         'nft_hast': ,
+    #         'co2_absorbtion'
+    #     }
 
-        message = PreprocessExchange(user=username, xray_path=image_path, id=xray_id, token=token,
-                                             study_time=current_time, isCron=True)
-        await rmq.publish_message(exchange_name=self.PREPROCESS_EXCHANGE, message=message.get_json(),
-                                    env=self.env)
+    #     message = PreprocessExchange(user=username, xray_path=image_path, id=xray_id, token=token,
+    #                                          study_time=current_time, isCron=True)
+    #     await rmq.publish_message(exchange_name=self.PREPROCESS_EXCHANGE, message=message.get_json(),
+    #                                 env=self.env)
