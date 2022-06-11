@@ -9,6 +9,7 @@ import UIKit
 import Foundation
 import Vision
 import AudioToolbox
+import AVFoundation
 
 
 class PlantTreeViewController: UIViewController {
@@ -20,25 +21,31 @@ class PlantTreeViewController: UIViewController {
     
     private var drawings: [CAShapeLayer] = []
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.taskLabel.text = nil
         self.taskLabel.isHidden = true
         
         // Do any additional setup after loading the view.
-        cameraController.prepare {(error) in
-            if let error = error {
-                print(error)
+        cameraController.prepare(camPosition: .front, completionHandler:
+        
+            { (error) in
+                if let error = error {
+                    print(error)
+                }
+                
+                let previewView = UIView(frame: self.view.frame)
+                self.view.addSubview(previewView)
+                self.view.sendSubviewToBack(previewView)
+                
+                //Begin processing images from the camera
+                try? self.cameraController.displayPreview(on: previewView)
             }
-            
-            let previewView = UIView(frame: self.view.frame)
-            self.view.addSubview(previewView)
-            self.view.sendSubviewToBack(previewView)
-            
-            //Begin processing images from the camera
-            try? self.cameraController.displayPreview(on: previewView)
-        }
+                                    
+        )
+        
         cameraController.delegate = self
         cameraController.livenessDelegate = self
     }
@@ -151,12 +158,20 @@ extension PlantTreeViewController: CameraControllerDelegate {
     
     func didReceiveCameraVideoOutput(frame: CVPixelBuffer) {
         
+        
+        
         faceDetector.detectFace(in: frame, completionHandler: { faces in
             self.clearDrawings()
             if faces != nil {
                 self.cameraController.handleFaceDetectionResults(faces!, frame: frame)
             }
         })
+    }
+    
+    func didCaptureImage(image: UIImage) {
+        
+        print("got image")
+        
     }
     
 }

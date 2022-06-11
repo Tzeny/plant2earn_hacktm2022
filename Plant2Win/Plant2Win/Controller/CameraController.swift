@@ -16,6 +16,7 @@ protocol CameraControllerDelegate {
     func faceBoundingBoxesUpdate(faceBoundingBoxes : [CAShapeLayer])
     func verifyFace(faceFrame: [CVPixelBuffer])
     func debug(image: UIImage)
+    func didCaptureImage(image: UIImage)
 }
 
 protocol CameraLivenessDelegate {
@@ -32,7 +33,7 @@ class CameraController: NSObject {
     fileprivate var frontCameraInput: AVCaptureDeviceInput?
     fileprivate var rearCameraInput: AVCaptureDeviceInput?
     
-    fileprivate var photoOutput: AVCapturePhotoOutput?
+    fileprivate var photoOutput =  AVCapturePhotoOutput()
     fileprivate var previewLayer: AVCaptureVideoPreviewLayer?
     
     fileprivate let videoDataOutput = AVCaptureVideoDataOutput()
@@ -57,6 +58,25 @@ extension CameraController: AVCaptureVideoDataOutputSampleBufferDelegate {
         
         delegate?.didReceiveCameraVideoOutput(frame: frame)
     }
+}
+
+extension CameraController: AVCapturePhotoCaptureDelegate {
+    
+    
+    
+    public func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        
+        guard let imageData = photo.fileDataRepresentation() else { return }
+        let previewImage = UIImage(data: imageData)
+        
+        if let image = previewImage {
+            delegate?.didCaptureImage(image: image)
+        } else {
+            return
+        }
+        
+    }
+    
 }
 
 extension CameraController {
@@ -185,7 +205,7 @@ extension CameraController {
 
 extension CameraController {
     
-    public func prepare(completionHandler: @escaping (Error?) -> Void) {
+    public func prepare(camPosition: AVCaptureDevice.Position, completionHandler: @escaping (Error?) -> Void) {
             
             func createCaptureSession() {
                 self.captureSession = AVCaptureSession()
@@ -205,19 +225,22 @@ extension CameraController {
                     throw CameraControllerError.noCamerasAvailable
                 }
 
-                 
                 for camera in cameras {
-                    if camera.position == .front {
-                        self.frontCamera = camera
+                    if camPosition == .front {
+                        if camera.position == .front {
+                            self.frontCamera = camera
+                        }
+                    }else{
+                        if camera.position == .back {
+                            self.rearCamera = camera
+        
+                            try camera.lockForConfiguration()
+                            camera.focusMode = .continuousAutoFocus
+                            camera.unlockForConfiguration()
+                        }
                     }
                     
-    //                if camera.position == .back {
-    //                    self.rearCamera = camera
-    //
-    //                    try camera.lockForConfiguration()
-    //                    camera.focusMode = .continuousAutoFocus
-    //                    camera.unlockForConfiguration()
-    //                }
+  
                 }
             }
             
@@ -226,25 +249,31 @@ extension CameraController {
                 guard let captureSession = self.captureSession else { throw CameraControllerError.captureSessionIsMissing }
                 
                    
-    //               if let rearCamera = self.rearCamera {
-    //                   self.rearCameraInput = try AVCaptureDeviceInput(device: rearCamera)
-    //
-    //                   if captureSession.canAddInput(self.rearCameraInput!) { captureSession.addInput(self.rearCameraInput!) }
-    //
-    //                   self.currentCameraPosition = .rear
-    //               }else
+                if camPosition == .front {
+                    
+                    if let frontCamera = self.frontCamera {
+                    
+                        self.frontCameraInput = try AVCaptureDeviceInput(device: frontCamera)
+                    
+                        if captureSession.canAddInput(self.frontCameraInput!) { captureSession.addInput(self.frontCameraInput!) }
+                        else { throw CameraControllerError.inputsAreInvalid }
                 
-                if let frontCamera = self.frontCamera {
-                
-                    self.frontCameraInput = try AVCaptureDeviceInput(device: frontCamera)
-                
-                    if captureSession.canAddInput(self.frontCameraInput!) { captureSession.addInput(self.frontCameraInput!) }
-                    else { throw CameraControllerError.inputsAreInvalid }
-            
-                    self.currentCameraPosition = .front
+                        self.currentCameraPosition = .front
+                    } else { throw CameraControllerError.noCamerasAvailable }
+                }else {
+                   if let rearCamera = self.rearCamera {
+                       
+                       self.rearCameraInput = try AVCaptureDeviceInput(device: rearCamera)
+    
+                       if captureSession.canAddInput(self.rearCameraInput!) { captureSession.addInput(self.rearCameraInput!) }
+    
+                       self.currentCameraPosition = .rear
+                   }
+                    else
+                    { throw CameraControllerError.inputsAreInvalid }
+    
                 }
-                else { throw CameraControllerError.noCamerasAvailable }
-                
+
             }
             
             func configureCameraOutput() throws {
@@ -303,7 +332,35 @@ extension CameraController {
         
         captureSession.stopRunning()
     }
+    
+    public func handleTakePhoto() {
+        
+        guard let session = captureSession else { return }
+        
+        if session.canAddOutput(photoOutput) {
+            session.addOutput(photoOutput)
+        }else {
+            
+            return
+        }
+        
+        let photoSettings = AVCapturePhotoSettings()
+        
+        photoOutput.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])])
+        
+        photoOutput.capturePhoto(with: photoSettings, delegate: self)
+        /*
+        if let photoPreviewType = photoSettings.availablePreviewPhotoPixelFormatTypes.first {
+            photoSettings.previewPhotoFormat = [kCVPixelBufferPixelFormatTypeKey as String: photoPreviewType]
+            
+            
+            photoOutput.capturePhoto(with: photoSettings, delegate: self)
+        }*/
+    }
+    
 }
+
+
 
 extension CameraController {
     public enum CameraPosition {
