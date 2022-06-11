@@ -17,6 +17,7 @@ contract Plant2Earn is ERC721URIStorage, Ownable{
   constructor() ERC721("Plant2Earn", "P2E") {
   }
 
+
   function verifySignature(string memory tokenURI, uint8 v, bytes32 r,
               bytes32 s) public pure returns (address signer) {
     bytes32 data_hash = keccak256(abi.encodePacked(string.concat("\x19Ethereum Signed Message:\n", Strings.toString(bytes(tokenURI).length)),tokenURI));
@@ -32,7 +33,6 @@ contract Plant2Earn is ERC721URIStorage, Ownable{
     return TreeSigner;
   }
 
-  //joined = b'\x19' + version + signable_message.header + signable_message.body
 
   function CreateTree(address user, uint8 v, bytes32 r, bytes32 s, string memory tokenURI) public returns (uint256){
     require(verifySignature(tokenURI, v, r, s)==TreeSigner,"Invalid signature!");
