@@ -26,9 +26,9 @@ async def process_queue(queue):
 
             data = json.loads(message.body)
             img_path = data['img_path']
-            output_basepath = f'{output_dir}/{os.path.basename(ii)}'
+            output_basepath = f'{output_dir}/{os.path.basename(img_path)}'
 
-            logging.info(f"Radiography {data['id']} starting analysis...")
+            logging.info(f"{data['id']} starting analysis...")
             if os.path.isfile(img_path):
                 # predict on image
                 bbox_path = f'{output_basepath}_1.jpeg'
@@ -37,10 +37,10 @@ async def process_queue(queue):
 
                 logging.info(f"{data['id']} finishing analysis...")
 
-                message = SegmentationAnswer(1, data['id'], bbox_path, leaf_path)
+                message = SegmentationAnswer(data['id'], bbox_path, leaf_path)
                 await rmq.publish_message(exchange_type='ai_algorithms_response', message=message.get_json())
 
-                logging.debug(f"Radiography {data['id']} message sent to rabbitmq...")
+                logging.debug(f"{data['id']} message sent to rabbitmq...")
             else:
                 logging.info(f"Could not process {data['id']}, file missing from {img_path}...")
 

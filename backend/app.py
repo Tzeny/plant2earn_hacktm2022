@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
     # Login Handler
     account_handler = AccountHandler(place, backend_type, db_connection)
-    hacktm_handler = HacktmHandler(place, db_connection)
+    hacktm_handler = HacktmHandler(place, db_connection, config)
 
     api = web.Application()
 
@@ -45,8 +45,8 @@ if __name__ == "__main__":
     api.router.add_route('POST', '/login', account_handler.login)
     api.router.add_route('POST', '/register', account_handler.register)
 
-    api.router.add_route('POST', '/hacktm/segment_leaf', hacktm_handler.segment_leaf)
-    api.router.add_route('POST', '/hacktm/detect_tree', hacktm_handler.segment_leaf)
+    api.router.add_route('POST', '/hacktm/segment_leaf', hacktm_handler.detect_tree)
+    api.router.add_route('POST', '/hacktm/detect_tree', hacktm_handler.detect_tree)
     api.router.add_route('GET', '/hacktm/nft/retrieve', hacktm_handler.retrieve_latest_nfts)
 
     ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)

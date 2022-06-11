@@ -4,6 +4,8 @@ import {Inject} from '@angular/core';
 import {ChartConfiguration, ChartDataSets, ChartOptions, ChartType} from 'chart.js';
 import {Color, Label} from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import {GlobalService} from "../services/global.service";
+import {DialogCertificateComponent} from "../dialog_certificate_component/dialog_certificate_component";
 
 @Component({
   selector: 'dialog-selector',
@@ -14,8 +16,8 @@ export class DialogComponent implements OnInit {
 
   chartData = [
     {
-      data: [330, 600, 260, 700],
-      label: 'Price'
+      data: [],
+      label: 'ETH Price'
     }
   ];
 
@@ -36,16 +38,23 @@ export class DialogComponent implements OnInit {
     responsive: true
   };
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, private _global: GlobalService) {
   }
 
   ngOnInit() {
-    console.log('On INIT!');
-    console.log(this.data);
+    this.updateChartData();
+  }
+
+  updateChartData() {
     this.chartLabels = [];
     for (var date of this.data['info']['price']) {
       this.chartLabels.push(date['timestamp'].split('Z')[1]);
-      this.chartLabels.push(date['timestamp'].split('Z')[1]);
+      console.log(date['price'].split(' ')[0]);
+      this.chartData[0]['data'].push(date['price'].split(' ')[0])
     }
+  }
+
+  BuyForest() {
+    this.dialog.open(DialogCertificateComponent);
   }
 }
