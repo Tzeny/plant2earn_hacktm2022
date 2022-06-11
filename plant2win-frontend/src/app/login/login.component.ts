@@ -29,8 +29,8 @@ export class LoginComponent {
           this._authenticationService.setSession(response);
           this._router.navigateByUrl('/dashboard');
         }, error => {
-          this._router.navigateByUrl('/dashboard');
-          // this.toastr.showError(error.error.message, 'Login failed');
+          // this._router.navigateByUrl('/dashboard');
+          this.toastr.showError(error.error.message, 'Login failed');
           console.log(error);
         }
       );
