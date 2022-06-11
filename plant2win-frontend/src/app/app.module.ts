@@ -36,6 +36,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {DialogComponent} from "./dialog_component/dialog_component";
 import {MatDialogModule} from "@angular/material/dialog";
 import {ChartsModule} from "ng2-charts";
+import {DialogCertificateComponent} from "./dialog_certificate_component/dialog_certificate_component";
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import {ChartsModule} from "ng2-charts";
     LoginComponent,
     DashboardComponent,
     BorderToolsComponent,
-    DialogComponent
+    DialogComponent,
+    DialogCertificateComponent
   ],
   imports: [
     FlexLayoutModule,
@@ -81,7 +83,8 @@ import {ChartsModule} from "ng2-charts";
     MakeToastrService
   ],
   entryComponents: [
-    DialogComponent
+    DialogComponent,
+    DialogCertificateComponent
   ],
   bootstrap: [AppComponent]
 })
