@@ -21,7 +21,6 @@ export class AuthenticationService {
     }
 
     logout() {
-        // localStorage.removeItem('id_token');
         localStorage.removeItem('expires_at');
         localStorage.removeItem('username');
         localStorage.removeItem('name');

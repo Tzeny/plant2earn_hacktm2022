@@ -8,9 +8,8 @@ input[type="file"] {
 .resizeUpload {
   width: 100%;
   position: relative;
-  height: 70%;
-  padding-top: 2%;
-  padding-bottom: 2%;
+  height: 100%;
+  padding: 2%;
 }
 
 .drag_drop_write {
