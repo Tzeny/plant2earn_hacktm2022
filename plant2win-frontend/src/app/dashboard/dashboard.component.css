@@ -9,7 +9,7 @@ input[type="file"] {
   width: 100%;
   position: relative;
   height: 100%;
-  padding: 2%;
+  padding: 1.5%;
 }
 
 .drag_drop_write {
@@ -53,12 +53,11 @@ span.title {
 
 #dashboard_component {
   font-family: 'HelveticaNeue-Roman', sans-serif;
-  margin: 0 !important;
-  overflow: hidden;
+  /*margin: 0 !important;*/
+  margin-top: var(--banner_height);
   padding: 0 !important;
-  height: calc(100% - var(--banner_height) ) !important;
   width: 100% !important;
-  background-color: #01131d;
+  background-color: #fbfcff;
 }
 
 .browseDiv {
@@ -274,7 +273,9 @@ span.title {
   .sizeInfo {
     display: none;
   }
-  .supportedExtension {
+  .
+
+  supportedExtension {
     display: none;
   }
 
@@ -330,5 +331,18 @@ span.title {
 }
 
 .mat-card{
-  background-color: white;
+  margin-bottom: 10px;
+}
+
+#leftdiv {
+  max-width: 40%;
+}
+
+#rightdiv {
+  max-width: 40%;
+  float: right;
+}
+mat-card-content p {
+  margin-bottom: 2px;
+  margin-top:5px;
 }

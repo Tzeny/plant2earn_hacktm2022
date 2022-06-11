@@ -1,6 +1,6 @@
 <div style="height: 100%">
   <div style="height: 100%">
-    <main role="main" class="mainStyle" >
+    <main role="main" class="mainStyle" [ngStyle]="{'overflow':location.path().indexOf('login') !== -1 ? 'hidden' : 'auto' }" >
       <router-outlet></router-outlet>
     </main>
   </div>
