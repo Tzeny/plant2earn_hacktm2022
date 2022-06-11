@@ -26,7 +26,7 @@ RUN mkdir -p /Segmentation/Local/Models
 
 COPY ./SegmentationDocker/* /Segmentation/
 COPY ./common/ /Segmentation
-COPY ./models/SegmentationDocker/ /Segmentation/models/
+COPY ./ai_models/SegmentationDocker/ /Segmentation/models/
 RUN true
 
 CMD python3 ./Segmentation.py
