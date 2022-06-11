@@ -1,5 +1,5 @@
 //
-//  SelfieVerificationViewController.swift
+//  TreeTypeViewController.swift
 //  Plant2Win
 //
 //  Created by Stefan Iarca on 11.06.2022.
@@ -7,16 +7,18 @@
 
 import UIKit
 
-class SelfieVerificationViewController: UIViewController {
+class TreeTypeViewController: UIViewController {
 
+    @IBOutlet weak var takePhotoButton: UIButton!
     private let cameraController = CameraController()
+    private var captureImage = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         
-        cameraController.prepare {(error) in
+        cameraController.prepare(camPosition: .back, completionHandler: {(error) in
             if let error = error {
                 print(error)
             }
@@ -27,11 +29,17 @@ class SelfieVerificationViewController: UIViewController {
             
             //Begin processing images from the camera
             try? self.cameraController.displayPreview(on: previewView)
-        }
+        })
+
         cameraController.delegate = self
     }
     
 
+    @IBAction func takePhoto(_ sender: UIButton) {
+        
+        captureImage = true
+        
+    }
     /*
     // MARK: - Navigation
 
@@ -45,9 +53,7 @@ class SelfieVerificationViewController: UIViewController {
 }
 
 
-
-//This protocol is responsible for drawing contours on the screen. It also forwards the liveness check
-extension PlantTreeViewController: CameraControllerDelegate {
+extension TreeTypeViewController: CameraControllerDelegate {
     func verifyFace(faceFrame: [CVPixelBuffer]) {
 //        print("This shuld never be called")
     }
@@ -64,12 +70,38 @@ extension PlantTreeViewController: CameraControllerDelegate {
     
     func didReceiveCameraVideoOutput(frame: CVPixelBuffer) {
         
-        //faceDetector.detectFace(in: frame, completionHandler: { faces in
-        //    self.clearDrawings()
-        //    if faces != nil {
-        //        self.cameraController.handleFaceDetectionResults(faces!, frame: frame)
-        //    }
-        //})
+        DispatchQueue.main.async {
+            if self.captureImage {
+                
+                let ci = CIImage(cvPixelBuffer: frame)
+                let tempContext = CIContext(options: nil)
+                
+                guard let videoImage = tempContext.createCGImage(ci, from: CGRect(x: 0, y: 0, width: CVPixelBufferGetWidth(frame), height: CVPixelBufferGetHeight(frame))) else {return}
+                
+                let image = UIImage(cgImage: videoImage)
+                
+                print("got image")
+                
+                let previewImage = UIImageView(frame: UIScreen.main.bounds)
+                self.view.addSubview(previewImage)
+                
+                previewImage.image = image
+                previewImage.contentMode = .scaleAspectFit
+                
+                self.cameraController.close()
+                self.cameraController.delegate = nil
+                
+                self.view.bringSubviewToFront(self.takePhotoButton)
+            }
+        }
+        
+
+    }
+    
+    func didCaptureImage(image: UIImage) {
+        
+    
+        
     }
     
 }

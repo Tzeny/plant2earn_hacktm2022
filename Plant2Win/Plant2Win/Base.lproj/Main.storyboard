@@ -210,14 +210,65 @@
                     <view key="view" contentMode="scaleToFill" id="Vfj-hN-jhH">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dTD-he-Hgm">
+                                <rect key="frame" x="159" y="831" width="96" height="31"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Take Photo"/>
+                                <connections>
+                                    <action selector="takePhoto:" destination="Q9P-92-bpc" eventType="touchUpInside" id="DlD-Vq-nZY"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="Eq2-C7-B2w"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="dTD-he-Hgm" firstAttribute="centerX" secondItem="Vfj-hN-jhH" secondAttribute="centerX" id="ba9-bP-m2h"/>
+                            <constraint firstItem="dTD-he-Hgm" firstAttribute="bottom" secondItem="Eq2-C7-B2w" secondAttribute="bottom" id="qoP-5c-K4T"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="FIi-Th-Ufj"/>
+                    <connections>
+                        <outlet property="takePhotoButton" destination="dTD-he-Hgm" id="pXD-I8-QZE"/>
+                        <segue destination="llD-zY-ukj" kind="show" identifier="TreeTypeSegue" id="hrm-DM-VQW"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rP5-mv-Hvp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3294" y="-232"/>
+        </scene>
+        <!--Tree Type View Controller-->
+        <scene sceneID="o9W-jE-7Rk">
+            <objects>
+                <viewController id="llD-zY-ukj" customClass="TreeTypeViewController" customModule="Plant2Win" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="r7V-of-0wX">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cLF-BV-liR">
+                                <rect key="frame" x="159" y="831" width="96" height="31"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Take Photo"/>
+                                <connections>
+                                    <action selector="takePhoto:" destination="llD-zY-ukj" eventType="touchUpInside" id="ao6-OV-9xd"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Q7R-oi-aSF"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="cLF-BV-liR" firstAttribute="centerX" secondItem="r7V-of-0wX" secondAttribute="centerX" id="Chh-um-kWb"/>
+                            <constraint firstItem="cLF-BV-liR" firstAttribute="bottom" secondItem="Q7R-oi-aSF" secondAttribute="bottom" id="Sut-Hw-g4b"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="rGp-c6-t2D"/>
+                    <connections>
+                        <outlet property="takePhotoButton" destination="cLF-BV-liR" id="UDu-Dy-IUy"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="G7c-bB-2H0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4387" y="-232"/>
         </scene>
     </scenes>
     <resources>
