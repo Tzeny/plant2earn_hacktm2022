@@ -9,6 +9,7 @@ from json import JSONDecodeError
 from utils import json_response
 from connection import rabbitmq_connection as rmq
 from models.RMQModels import AlgorithmExchangeMessage
+from aiohttp import web
 
 from PIL import Image
 from io import BytesIO
@@ -56,8 +57,21 @@ class HacktmHandler(Handler):
         return {
             'bbox_image': 'url',
             'black_image': 'url',
-            'leaf_class':
+            'leaf_class':""
         }
+    def json_response(body, **kwargs):
+        kwargs['body'] = json.dumps(body or kwargs['body'], default=datetime_converter).encode(
+            'utf-8')  # TODO: this fails on empty query results
+        kwargs['content_type'] = 'text/json'
+        return web.Response(**kwargs)
+
+    async def retrieve_latest_nfts(self,request):
+        nfts_answer = []
+        nfts = await self.db_connection.find('nfts', {'id':{'$exists':True}})
+        async for doc in nfts:
+            doc['_id'] = str(doc['_id'])
+            nfts_answer.append(doc)
+        return json_response(nfts_answer)
 
     # def detect_tree():
     #     in {

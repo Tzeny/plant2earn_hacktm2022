@@ -1,7 +1,6 @@
 from models.Users import User
 from utils import json_response, check_jwt, encrypt_string
 from bson import json_util
-from models.ResponseTypes import *
 import jwt
 from handlers.handler import Handler
 from json import JSONDecodeError
