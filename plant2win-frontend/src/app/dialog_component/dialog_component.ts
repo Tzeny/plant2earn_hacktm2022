@@ -15,24 +15,22 @@ export class DialogComponent implements OnInit {
   chartData = [
     {
       data: [330, 600, 260, 700],
-      label: 'Account A'
-    },
-    {
-      data: [120, 455, 100, 340],
-      label: 'Account B'
-    },
-    {
-      data: [45, 67, 800, 500],
-      label: 'Account C'
+      label: 'Price'
     }
   ];
 
-  chartLabels = [
-    'January',
-    'February',
-    'March',
-    'April'
-  ];
+
+  chartLabels = [];
+
+  chartColors: Array<any> = [
+    { // first color
+      backgroundColor: 'rgba(0,0,0,0.2)',
+      borderColor: 'green',
+      pointBackgroundColor: 'rgba(225,10,24,0.2)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(225,10,24,0.2)'
+    }];
 
   chartOptions = {
     responsive: true
@@ -44,5 +42,10 @@ export class DialogComponent implements OnInit {
   ngOnInit() {
     console.log('On INIT!');
     console.log(this.data);
+    this.chartLabels = [];
+    for (var date of this.data['info']['price']) {
+      this.chartLabels.push(date['timestamp'].split('Z')[1]);
+      this.chartLabels.push(date['timestamp'].split('Z')[1]);
+    }
   }
 }
