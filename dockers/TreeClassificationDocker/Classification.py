@@ -47,6 +47,7 @@ async def process_queue(queue):
                 message = TreeClassificationAnswer(id=data['id'], tree_class=pred_class)
 
                 await rmq.publish_message(exchange_type='backend_process', message=message.get_json())
+                logging.info(f'Predictions {predictions}: {pred_class}')
                 logging.info(f"{data['id']} message sent to rabbitmq, total time: {time.time() - a:.2f}s")
             else:
                 logging.info(f"Could not process {data['id']}, file missing from {img_path}...")

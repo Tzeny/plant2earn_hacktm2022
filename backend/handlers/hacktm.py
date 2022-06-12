@@ -203,6 +203,15 @@ class HacktmHandler(Handler):
             long = await long.read()
             long = float(long.decode('utf-8'))
 
+            try:
+                hard_tree_type = await reader.next()
+                if 'hard_tree_type' not in hard_tree_type.name:
+                    raise AttributeError(f'{img_id}: long wrong field name for part')
+                hard_tree_type = await hard_tree_type.read()
+                hard_tree_type = hard_tree_type.decode('utf-8')
+            except:
+                hard_tree_type = None
+
             logger.info(f"{img_id}: Image from {image_uploaded.name} uploaded to {img_path} in {time.time() - a:.2f}s")
         except Exception as e:
             logger.exception(f'Error receiving image')
@@ -255,7 +264,20 @@ class HacktmHandler(Handler):
             nft_path = f'https://file.plant2win.com/nft/{random.randint(0, 47)}.png'
         
         nft_timestamp = str(datetime.fromtimestamp(time.time(), tz=pytz.timezone('Europe/Bucharest'))).replace(' ','Z').split('.')[0]
-        nft_co2 = f'20'
+
+        co2_species = {
+            'sour cherry': "6T",
+            'fig': "5T",
+            'cherry': "6T", 
+            'apple': "4T",
+            'birch': "3T",
+        }
+
+        if hard_tree_type is not None:
+            tree_type = hard_tree_type
+
+        nft_co2 = co2_species[tree_type]
+        nft_price = int(nft_co2[0]) * 6 * 0.0007 * 1000
 
         # generate nft
         t = threading.Thread(target=self.generate_nft, args=(img_id, nft_path, nft_co2, self.db_connection, asyncio.get_event_loop()))
@@ -271,7 +293,7 @@ class HacktmHandler(Handler):
             "price" : [ 
                 {
                     "timestamp" : nft_timestamp,
-                    "price" : float(random.randint(50, 150))
+                    "price" : nft_price
                 }, 
             ],
             "creation_time" : nft_timestamp,

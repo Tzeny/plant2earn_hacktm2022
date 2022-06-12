@@ -17,7 +17,7 @@ export class DialogComponent implements OnInit {
   chartData = [
     {
       data: [],
-      label: 'µETH Price'
+      label: 'mETH Price'
     }
   ];
 
