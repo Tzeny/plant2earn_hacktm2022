@@ -4,23 +4,23 @@
     <div style="height:100%">
       <h2 style="color:#1e1e1e"><strong>Latest NFTs</strong></h2>
       <div fxLayout.xs="column" fxLayout="row wrap" fxLayoutGap="10px" ngClass.gt-xs="ml-10">
-        <mat-card *ngFor="let data of nfts" fxFlex.sm="0 1 calc(50%-10px)" fxFlex.md="0 1 calc(33%-10px)"
+        <mat-card *ngFor="let data of nfts;let i = index" fxFlex.sm="0 1 calc(50%-10px)" fxFlex.md="0 1 calc(33%-10px)"
                   fxFlex.gt-md="0 1 calc(20%-10px)">
           <img mat-card-image src="{{data['nft_url']}}" class="image">
           <mat-card-content>
             <div class="row">
               <div class="col-md-6">
                 <p style="color:#5f5f5f">{{data['forest_name']}}</p>
-                <h5 style="margin-top:2px">Tree 01</h5>
+                <h5 style="margin-top:2px">{{data['location']}}</h5>
               </div>
               <div class="col-md-6" style="text-align: right">
-                <p style="#5f5f5f">Price</p>
+                <p style="color:#5f5f5f">Price</p>
                 <p style="color:#1e1e1e;margin-top: -3px!important;">{{GetLatestPrice(data['price'])}} ETH</p>
               </div>
             </div>
           </mat-card-content>
           <mat-card-actions align="end">
-            <div class="filterButton" style="" (click)="openDialog(data)">
+            <div class="filterButton" style="" (click)="openDialog(data,i)">
               <p>See Details
                 <i class="fa fa-arrow-right" style="font-size: 12px;margin-left: 4px;"></i>
               </p>

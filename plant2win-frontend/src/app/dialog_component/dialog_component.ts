@@ -17,7 +17,7 @@ export class DialogComponent implements OnInit {
   chartData = [
     {
       data: [],
-      label: 'Price'
+      label: 'ETH Price'
     }
   ];
 
@@ -42,8 +42,10 @@ export class DialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('On INIT!');
-    console.log(this.data);
+    this.updateChartData();
+  }
+
+  updateChartData() {
     this.chartLabels = [];
     for (var date of this.data['info']['price']) {
       this.chartLabels.push(date['timestamp'].split('Z')[1]);
