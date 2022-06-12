@@ -48,3 +48,15 @@ class TreeDetectionAnswer:
 
     def __str__(self):
         return str(self.__dict__)
+
+class TreeClassificationAnswer:
+    def get_json(self):
+        return json.dumps(self.__dict__, default=to_serializable).encode('utf8')
+
+    def __init__(self, id, tree_class):
+        self.answer_type = 3
+        self.id = id
+        self.tree_class = tree_class
+
+    def __str__(self):
+        return str(self.__dict__)

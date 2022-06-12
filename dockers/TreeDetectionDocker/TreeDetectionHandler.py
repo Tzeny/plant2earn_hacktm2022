@@ -34,7 +34,7 @@ import numpy as np
 
 class TreeDetectionHandler:
     def __init__(self, model_path):
-        confidence_t = 0.5
+        confidence_t = 0.1
 
         cfg = get_cfg()
         cfg.merge_from_file(model_zoo.get_config_file(
@@ -77,6 +77,9 @@ class TreeDetectionHandler:
 
         for bbox, score, class_id in zip(predictions['instances'].pred_boxes.tensor.numpy(), predictions['instances'].scores.numpy(), predictions['instances'].pred_classes.numpy()): 
             if class_id not in class_id_dict.keys():
+                continue
+
+            if class_id == 0 and score < 0.5:
                 continue
                 
             if get_area(bbox) > get_area(resulting_bboxes[class_id_dict[class_id]]):

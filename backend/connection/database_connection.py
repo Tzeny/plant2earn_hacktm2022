@@ -3,6 +3,7 @@ import motor
 from models.ResponseTypes import *
 import logging
 from settings import config
+import asyncio
 
 logger = logging.getLogger('aiohttp')
 
@@ -14,6 +15,7 @@ class DatabaseConnection:
         mongo_ip = config['mongodb'].get('ip_' + env, config['mongodb']['ip_default'])
         mongo_url = f"mongodb://{config['mongodb']['user']}:{config['mongodb']['password']}@{mongo_ip}:{MONGO_PORT}"
         client = motor.motor_asyncio.AsyncIOMotorClient(mongo_url)
+        client.get_io_loop = asyncio.get_running_loop
         self.db = client.plant2win
 
         logger.info(f"Database connection configured with url: {mongo_url}...")
