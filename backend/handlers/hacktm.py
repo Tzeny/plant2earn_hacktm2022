@@ -1,9 +1,12 @@
 import asyncio
+import random
 import uuid
 import aiohttp
 import sys
 import os
 from datetime import date, datetime
+
+import pytz
 from handlers.handler import Handler
 from json import JSONDecodeError
 from utils import json_response
@@ -204,18 +207,47 @@ class HacktmHandler(Handler):
             with self.answer_dict_lock:
                 if 'leaf_segmentation' in self.answer_dict.get(img_id, {}):
                     logger.info(f'Leaf seg done in {time.time() - a:.2f}s')
-                    # self.answer_dict[img_id]['leaf_segmentation']['bbox_image'] = f'https://file.plant2win.com/{current_time}/leaf_segmentation.jpg'
-                    return json_response(self.answer_dict[img_id]['leaf_segmentation'],  status=200)
+                    leaf_seg_entry = self.answer_dict[img_id]['leaf_segmentation'].copy()
+                    break
                 else:
                     logger.info(f'Tree detection not yet in dict')
             if time.time() - a > 15:
                 return json_response({'message': f'Timeout whilst processing image'}, status=400)
 
-    def json_response(body, **kwargs):
-        kwargs['body'] = json.dumps(body or kwargs['body'], default=datetime_converter).encode(
-            'utf-8')  # TODO: this fails on empty query results
-        kwargs['content_type'] = 'text/json'
-        return web.Response(**kwargs)
+        # generate nft
+
+        nft_path = f'https://file.plant2win.com/nft/0{random.randint(1, 8)}.jpg'
+        nft_timestamp = str(datetime.fromtimestamp(time.time(), tz=pytz.timezone('Europe/Bucharest'))).replace(' ','Z').split('.')[0]
+        
+        
+
+        nft_doc = {
+            "id" : img_id,
+            "username" : "Stefan",
+            "location": "Dumbravita, Timis",
+            "nft_url" : nft_path,
+            "forest_name" : "Stefan's Forest",
+            "price" : [ 
+                {
+                    "timestamp" : nft_timestamp,
+                    "price" : "0.014"
+                }, 
+            ],
+            "creation_time" : nft_timestamp,
+            "co2_absorbtion" : "0.3T",
+            "tree_type": "cherry"
+        }
+
+        await self.db_connection.save_to_db('nfts', nft_doc)
+        logger.info(f'NFT {img_id} saved in db')
+
+        leaf_seg_entry = {
+            'bbox_path': f'https://file.plant2win.com/{current_time}/leaf_seg.jpg',
+            'black_image': f'https://file.plant2win.com/{current_time}/leaf_only.jpg',
+            'nft_entry': nft_doc,
+        }
+
+        return json_response(leaf_seg_entry,  status=200)
 
     async def retrieve_latest_nfts(self,request):
         nfts_answer = []
@@ -224,54 +256,3 @@ class HacktmHandler(Handler):
             doc['_id'] = str(doc['_id'])
             nfts_answer.append(doc)
         return json_response(nfts_answer)
-
-    # def detect_tree():
-    #     in {
-    #         'image': 'base64'
-    #     }
-
-    #     return {
-    #         'coord_copac': [x1, y1, x2, y2],
-    #         'coord_om': [x1, y1, x2, y2],
-    #         'bbox_image': 'url'
-    #     }
-
-    # def generate_nft():
-    #     in {
-    #         'geolocation':
-    #         'tree_type': 
-    #         'tree_age': 
-    #     }
-
-    #     // calculate  co2_absorbtion
-    #     // generate+save image
-    #     // create contract
-    #     // insert into db
-
-    #     // nft
-    #     {
-    #         'id': ,
-    #         'username': , + username address ETH + semnatura dinamica
-    #         'nft_image': ,
-    #         'ipfs_url': ,
-    #         'forest_name': ,
-    #         'price': [
-    #             {
-    #                 'timestamp': <time>,
-    #                 'price': <price>
-    #             }
-    #         ]
-    #         'creation_time': ,
-    #         'co2_absorbtion': ,
-    #     }
-
-    #     return {
-    #         'nft_image': 'url',
-    #         'nft_hast': ,
-    #         'co2_absorbtion'
-    #     }
-
-    #     message = PreprocessExchange(user=username, xray_path=image_path, id=xray_id, token=token,
-    #                                          study_time=current_time, isCron=True)
-    #     await rmq.publish_message(exchange_name=self.PREPROCESS_EXCHANGE, message=message.get_json(),
-    #                                 env=self.env)

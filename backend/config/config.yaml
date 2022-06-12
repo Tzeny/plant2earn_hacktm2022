@@ -24,7 +24,7 @@ RabbitMQ:
     specialID: MD5CLOUD
     listen: True # listen for receiving messages from rabbit
     send: True # send messages to rabbit
-  ip_default: 127.0.0.1
+  ip_default: rabbitmq
   port: 5672
   user: admin
   password: Timisoara13
