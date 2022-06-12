@@ -32,7 +32,7 @@ def get_cropped_leaf(img,predictor,return_mapping=False,resize=None):
     masker = pred_masks[np.argmin([calculateDistance(x[0], x[1], int(img.shape[1]/2), int(img.shape[0]/2)) for i,x in enumerate(boxes.get_centers()) if (boxes[i].area()>=torch.mean(boxes.area()).to("cpu")).item()])].to("cpu").numpy().astype(np.uint8)
 
     #mask image
-    mask_out = cv2.bitwise_and(img, img, mask=masker)
+    mask_out = cv2.bitwise_and(img, img, mask=masker) + np.array(((255 - masker), (255 - masker), (255 - masker))).reshape(img.shape)
     
     #find contours and boxes
     contours, hierarchy = cv2.findContours(masker.copy() ,cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -43,20 +43,21 @@ def get_cropped_leaf(img,predictor,return_mapping=False,resize=None):
     
 
     #crop image
-    cropped = get_cropped(rotrect,box,mask_out)
+    # cropped = get_cropped(rotrect,box,mask_out)
 
     #resize
-    rotated = MakeLandscape()(Image.fromarray(cropped))
+    # rotated = MakeLandscape()(Image.fromarray(cropped))
     
-    if not resize == None:
-        resized = ResizeMe((resize[0],resize[1]))(rotated)
-    else:
-        resized = rotated
+    # if not resize == None:
+    #     resized = ResizeMe((resize[0],resize[1]))(rotated)
+    # else:
+    #     resized = rotated
         
     if return_mapping:
-        img = cv2.drawContours(img, [box], 0, (0,0,255), 10)
+        # img = cv2.drawContours(img, [box], 0, (0,0,255), 10)
         img = cv2.drawContours(img, contours, -1, (255,150,), 10)
-        return resized, ResizeMe((int(resize[0]),int(resize[1])))(Image.fromarray(img))
+        # return resized, ResizeMe((int(resize[0]),int(resize[1])))(Image.fromarray(img))
+        return Image.fromarray(mask_out), Image.fromarray(img)
     
     return resized
 
