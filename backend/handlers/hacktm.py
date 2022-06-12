@@ -195,13 +195,13 @@ class HacktmHandler(Handler):
             if 'lat' not in lat.name:
                 raise AttributeError(f'{img_id}: lat wrong field name for part')
             lat = await lat.read()
-            lat = int(lat.decode('utf-8'))
+            lat = float(lat.decode('utf-8'))
 
             long = await reader.next()
             if 'long' not in long.name:
                 raise AttributeError(f'{img_id}: long wrong field name for part')
             long = await long.read()
-            long = int(long.decode('utf-8'))
+            long = float(long.decode('utf-8'))
 
             logger.info(f"{img_id}: Image from {image_uploaded.name} uploaded to {img_path} in {time.time() - a:.2f}s")
         except Exception as e:
@@ -255,7 +255,7 @@ class HacktmHandler(Handler):
             nft_path = f'https://file.plant2win.com/nft/{random.randint(0, 47)}.png'
         
         nft_timestamp = str(datetime.fromtimestamp(time.time(), tz=pytz.timezone('Europe/Bucharest'))).replace(' ','Z').split('.')[0]
-        nft_co2 = f'20T'
+        nft_co2 = f'20'
 
         # generate nft
         t = threading.Thread(target=self.generate_nft, args=(img_id, nft_path, nft_co2, self.db_connection, asyncio.get_event_loop()))
@@ -271,7 +271,7 @@ class HacktmHandler(Handler):
             "price" : [ 
                 {
                     "timestamp" : nft_timestamp,
-                    "price" : str(random.randint(50, 150))
+                    "price" : float(random.randint(50, 150))
                 }, 
             ],
             "creation_time" : nft_timestamp,
