@@ -32,21 +32,24 @@ logger = logging.getLogger('aiohttp')
 class HacktmHandler(Handler):
     def __init__(self, env, db_connection, config):
         super(HacktmHandler, self).__init__(env, db_connection)
+
+        random.seed(time.time())
+
         self.env = env
         self.db_connection = db_connection
 
         self.answer_dict = {}
         self.answer_dict_lock = Lock()
 
-        self.loop = asyncio.get_event_loop()
+        loop = asyncio.get_event_loop()
 
         # get config if listen, send to cloud
         self.rmq_config = config['RabbitMQ'].get(self.env, config['RabbitMQ']['default_options'])
         logger.info('Diagnosis Handler configured...')
         if self.rmq_config['listen']:
-            self.loop.create_task(
+            loop.create_task(
                 self.process_algorithms_queue_thread(
-                    self.loop.run_until_complete(rmq.init(env, 'ai_algorithms_response'))
+                    loop.run_until_complete(rmq.init(env, 'ai_algorithms_response'))
                 )
             )
 
@@ -191,14 +194,14 @@ class HacktmHandler(Handler):
             lat = await reader.next()
             if 'lat' not in lat.name:
                 raise AttributeError(f'{img_id}: lat wrong field name for part')
-            
             lat = await lat.read()
+            lat = int(lat.decode('utf-8'))
 
             long = await reader.next()
             if 'long' not in long.name:
                 raise AttributeError(f'{img_id}: long wrong field name for part')
-            
             long = await long.read()
+            long = int(long.decode('utf-8'))
 
             logger.info(f"{img_id}: Image from {image_uploaded.name} uploaded to {img_path} in {time.time() - a:.2f}s")
         except Exception as e:
@@ -243,12 +246,19 @@ class HacktmHandler(Handler):
             if time.time() - a > 15:
                 return json_response({'message': f'Timeout whilst processing image'}, status=400)
 
-        nft_path = f'https://file.plant2win.com/nft/0{random.randint(1, 8)}.jpg'
+        # make sure we don't generate copies
+        nft_path = f'https://file.plant2win.com/nft/{random.randint(0, 47)}.png'
+        while True:
+            doc = await self.db_connection.find_one('nfts', {'nft_url': nft_path})
+            if doc is None:
+                break
+            nft_path = f'https://file.plant2win.com/nft/{random.randint(0, 47)}.png'
+        
         nft_timestamp = str(datetime.fromtimestamp(time.time(), tz=pytz.timezone('Europe/Bucharest'))).replace(' ','Z').split('.')[0]
         nft_co2 = f'20T'
 
         # generate nft
-        t = threading.Thread(target=self.generate_nft, args=(img_id, nft_path, nft_co2, self.db_connection, self.loop))
+        t = threading.Thread(target=self.generate_nft, args=(img_id, nft_path, nft_co2, self.db_connection, asyncio.get_event_loop()))
         t.start()
         logger.info('Starting NFT coroutine')
 
@@ -261,7 +271,7 @@ class HacktmHandler(Handler):
             "price" : [ 
                 {
                     "timestamp" : nft_timestamp,
-                    "price" : "0.014"
+                    "price" : str(random.randint(50, 150))
                 }, 
             ],
             "creation_time" : nft_timestamp,
