@@ -9,6 +9,9 @@ from ethereum_utils.nft_generator import Generator
 import json
 import threading
 
+import requests
+import json
+
 import pytz
 from handlers.handler import Handler
 from json import JSONDecodeError
@@ -35,15 +38,15 @@ class HacktmHandler(Handler):
         self.answer_dict = {}
         self.answer_dict_lock = Lock()
 
-        loop = asyncio.get_event_loop()
+        self.loop = asyncio.get_event_loop()
 
         # get config if listen, send to cloud
         self.rmq_config = config['RabbitMQ'].get(self.env, config['RabbitMQ']['default_options'])
         logger.info('Diagnosis Handler configured...')
         if self.rmq_config['listen']:
-            loop.create_task(
+            self.loop.create_task(
                 self.process_algorithms_queue_thread(
-                    loop.run_until_complete(rmq.init(env, 'ai_algorithms_response'))
+                    self.loop.run_until_complete(rmq.init(env, 'ai_algorithms_response'))
                 )
             )
 
@@ -245,14 +248,14 @@ class HacktmHandler(Handler):
         nft_co2 = f'20T'
 
         # generate nft
-        t = threading.Thread(target=self.generate_nft, args=(img_id, nft_path, nft_co2))
+        t = threading.Thread(target=self.generate_nft, args=(img_id, nft_path, nft_co2, self.db_connection, self.loop))
         t.start()
         logger.info('Starting NFT coroutine')
 
         nft_doc = {
             "id" : img_id,
             "username" : "Stefan",
-            "location": "Dumbravita, Timis",
+            "location": f"{lat}, {long}",
             "nft_url" : nft_path,
             "forest_name" : "Stefan's Forest",
             "price" : [ 
@@ -263,7 +266,9 @@ class HacktmHandler(Handler):
             ],
             "creation_time" : nft_timestamp,
             "co2_absorbtion" : nft_co2,
-            "tree_type": tree_type
+            "tree_type": tree_type,
+            "ipfs_uri": "In progress",
+            "blockchain_uri": "In progress",
         }
 
         await self.db_connection.save_to_db('nfts', nft_doc)
@@ -278,7 +283,8 @@ class HacktmHandler(Handler):
         return json_response(leaf_seg_entry,  status=200)
 
     @staticmethod
-    def generate_nft(img_id, nft_path, nft_co2):
+    def generate_nft(img_id, nft_path, nft_co2, db_connection, loop):
+        asyncio.set_event_loop(loop)
         try:
             logger.info("Started NFT coroutine")
 
@@ -298,8 +304,22 @@ class HacktmHandler(Handler):
                 "co2_absorbtion" : nft_co2,
             }
 
-            response = generator.generate_nft("0x09039B0ea5DA24cA9DD9C9ABDeCbbD6ef47C2bBA","ipfs://meh")
-            logger.info(f'NFT created: {response}')
+            files = {
+                img_id: (json.dumps(ipfs_json)),
+            }
+
+            response = requests.post('https://ipfs.infura.io:5001/api/v0/add', files=files)
+            p = response.json()
+            hash = p['Hash']
+            logging.info('Created ipfs entry')
+            ipfs_uri = f"https://ipfs.infura.io/ipfs/{hash}"
+
+            response = generator.generate_nft("0x09039B0ea5DA24cA9DD9C9ABDeCbbD6ef47C2bBA", ipfs_uri)
+            blockchain_uri = f"https://ropsten.etherscan.io/tx/{response['transactionHash'].hex()}"
+            logger.info(f'NFT created: {response}, IPFS URIs {ipfs_uri}, Blockchain URI {blockchain_uri}')
+
+            asyncio.run(db_connection.update_value('nfts', 'ipfs_uri', ipfs_uri, {"id" : img_id}))
+            asyncio.run(db_connection.update_value('nfts', 'blockchain_uri', blockchain_uri, {"id" : img_id}))
         except:
             logging.exception(f'NFT Error')
 
