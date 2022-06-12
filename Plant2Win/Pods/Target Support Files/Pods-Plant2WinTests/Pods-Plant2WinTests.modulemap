@@ -1,0 +1,6 @@
+framework module Pods_Plant2WinTests {
+  umbrella header "Pods-Plant2WinTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

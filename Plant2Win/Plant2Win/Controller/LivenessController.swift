@@ -23,6 +23,9 @@ class LivenessController: NSObject {
     public var livenessGuard = LivenessGuard();
     private var tests = [MoveDirection]()
     
+    private var pause = false
+    private var pauseTimer = Timer()
+    
     //MARK: Init
     override public init(){
         
@@ -139,12 +142,20 @@ extension LivenessController: CameraLivenessDelegate {
             return
         }
         
+        if pause {
+            updatePosition(newPosition: pathPoint!)
+            completionHandler(currentTest, false)
+            
+            return
+        }
         
         //Check if challenge has been solved from last update
         if currentTest == .left {
             if hasMovedLeft(newPoint: pathPoint!){
                 print("moved Left")
                 tests.removeFirst()
+                
+                self.addPause()
                 
                 completionHandler(tests.first, true)
                 return
@@ -154,6 +165,8 @@ extension LivenessController: CameraLivenessDelegate {
                 print("moved Right")
                 tests.removeFirst()
                 
+                self.addPause()
+                
                 completionHandler(tests.first, true)
                 return
             }
@@ -162,6 +175,8 @@ extension LivenessController: CameraLivenessDelegate {
                 print("moved up")
                 tests.removeFirst()
                 
+                self.addPause()
+                
                 completionHandler(tests.first, true)
                 return
             }
@@ -169,6 +184,8 @@ extension LivenessController: CameraLivenessDelegate {
             if hasMovedDown(newPoint: pathPoint!) {
                 print("moved down")
                 tests.removeFirst()
+                
+                self.addPause()
                 
                 completionHandler(tests.first, true)
                 return
@@ -182,6 +199,14 @@ extension LivenessController: CameraLivenessDelegate {
         completionHandler(currentTest, false)
     }
     
+    
+    private func addPause(){
+        self.pause = true
+        self.pauseTimer.invalidate()
+        self.pauseTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { _ in
+            self.pause = false
+        })
+    }
 }
 
 

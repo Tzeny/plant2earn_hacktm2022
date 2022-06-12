@@ -28,6 +28,15 @@ class PlantTreeViewController: UIViewController {
         self.taskLabel.text = nil
         self.taskLabel.isHidden = true
         
+        navigationController?.navigationBar.backgroundColor = .white
+        self.navigationItem.title = "STEP 1"
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        
+        navigationController
+        //navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(named: "arrow_back"), style: .plain, target: nil, action: nil)
+        
+        
         // Do any additional setup after loading the view.
         cameraController.prepare(camPosition: .front, completionHandler:
         
