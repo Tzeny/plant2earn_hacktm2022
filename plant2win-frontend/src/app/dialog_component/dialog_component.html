@@ -2,7 +2,7 @@
 <mat-dialog-content class="mat-typography">
   <div class="row">
     <div class="col-md-5">
-      <img mat-card-image src="/assets/dashboard/tree.png" class="image">
+      <img mat-card-image src="{{data.info['nft_url']}}" class="image">
     </div>
     <div class="col-md-7">
       <div style="margin-left: 10px;margin-top:10%">
@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="col-md-6">
-      <div class="filterButton" style="" (click)="BuyForest()">
+      <div class="filterButton" style="" (click)="BuyForest(data.info['blockchain_uri'])">
         <p>Buy Forest
           <i class="fa fa-arrow-right" style="font-size: 12px;margin-left: 4px;"></i>
         </p>

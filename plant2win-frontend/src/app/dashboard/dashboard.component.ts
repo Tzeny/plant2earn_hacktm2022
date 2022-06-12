@@ -48,13 +48,12 @@ export class DashboardComponent implements OnInit {
           console.log('Got an update!');
           this.nfts = resp;
           if (this.dialogRef !== undefined && this.dialogRef.componentInstance !== null && this.nfts !== undefined) {
-            // this.dialogRef.componentInstance.data = {'info': this.nfts[this.nftIndex]};
-            console.log(this.dialogRef);
+            this.dialogRef.componentInstance.data = {'info': this.nfts[this.nftIndex]};
             this.dialogRef.componentInstance.chartLabels = [];
             this.dialogRef.componentInstance.chartData[0]['data'] = [];
             for (var date of this.nfts[this.nftIndex]['price']) {
               this.dialogRef.componentInstance.chartLabels.push(date['timestamp'].split('Z')[1]);
-              this.dialogRef.componentInstance.chartData[0]['data'].push(date['price'].split(' ')[0])
+              this.dialogRef.componentInstance.chartData[0]['data'].push(date['price'])
             }
           }
         })
