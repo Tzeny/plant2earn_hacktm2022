@@ -7,6 +7,7 @@ import os
 from datetime import date, datetime
 from ethereum_utils.nft_generator import Generator
 import json
+import threading
 
 import pytz
 from handlers.handler import Handler
@@ -81,6 +82,10 @@ class HacktmHandler(Handler):
                             'coord_om': data['coord_om'],
                             'coord_copac': data['coord_copac'],
                             # 'bbox_path': data['bbox_path'],
+                        }
+                    elif at == 3:
+                        self.answer_dict[data['id']][answers_dict[at]] = {
+                            'tree_class': data['tree_class'],
                         }
 
                     logger.info(f'Received message: {self.answer_dict}')
@@ -197,11 +202,31 @@ class HacktmHandler(Handler):
             logger.exception(f'Error receiving image')
             return json_response({'message': f'Error receiving image: {e}'}, status=400)
 
-        logger.info(f'{img_id} trying to send to rabbit')
+        logger.info(f'{img_id} trying to send to seg rabbit')
         message = AlgorithmExchangeMessage(img_path=img_path, id=img_id, output_dir=request_dir)
         await rmq.publish_message(exchange_name='leaf_segmentation_exchange', message=message.get_json(), env=self.env)
         logger.info(f'{img_id} sent to rabbit')
 
+        logger.info(f'{img_id} trying to send to classification rabbit')
+        message = AlgorithmExchangeMessage(img_path=img_path, id=img_id, output_dir=request_dir)
+        await rmq.publish_message(exchange_name='tree_clasification_exchange', message=message.get_json(), env=self.env)
+        logger.info(f'{img_id} sent to rabbit')
+
+        # classify leaf
+        a = time.time()
+        while True:
+            await asyncio.sleep(1)
+            with self.answer_dict_lock:
+                if 'tree_classification' in self.answer_dict.get(img_id, {}):                    
+                    tree_type = self.answer_dict[img_id]['tree_classification']['tree_class']
+                    logger.info(f'Tree classification done in {time.time() - a:.2f}s: {tree_type}')                    
+                    break
+                else:
+                    logger.info(f'Tree classification not yet in dict')
+            if time.time() - a > 15:
+                return json_response({'message': f'Timeout whilst processing image'}, status=400)
+
+        # segment leaf
         a = time.time()
         while True:
             await asyncio.sleep(1)
@@ -215,31 +240,14 @@ class HacktmHandler(Handler):
             if time.time() - a > 15:
                 return json_response({'message': f'Timeout whilst processing image'}, status=400)
 
+        nft_path = f'https://file.plant2win.com/nft/0{random.randint(1, 8)}.jpg'
+        nft_timestamp = str(datetime.fromtimestamp(time.time(), tz=pytz.timezone('Europe/Bucharest'))).replace(' ','Z').split('.')[0]
+        nft_co2 = f'20T'
+
         # generate nft
-        try:
-            nft_path = f'https://file.plant2win.com/nft/0{random.randint(1, 8)}.jpg'
-            nft_timestamp = str(datetime.fromtimestamp(time.time(), tz=pytz.timezone('Europe/Bucharest'))).replace(' ','Z').split('.')[0]
-
-            node_url = "https://ropsten.infura.io/v3/c7d4a7dd4c414d8184e2e7acfe3a9057"
-            private_key = "872f3dee80ae96e40856c01bdd91cf332e7845aa669e001d335262dd04714a80"
-            signer_key = "872f3dee80ae96e40856c01bdd91cf332e7845aa669e001d335262dd04714a80" 
-            contract_address= "0x08AeDa006B3BFAD92AED30f6C79192f9F5D87b4c"
-            contract_abi = json.loads(open('ethereum_utils/abi.json').read().replace('\n', ''))
-
-            generator = Generator(node_url, private_key, signer_key, contract_address,contract_abi)
-
-            # store json ipfs
-            ipfs_json = {
-                "name": "Thor's hammer",
-                "description": "Mjölnir, the legendary hammer of the Norse god of thunder.",
-                "image": nft_path,
-                "strength": 20
-            }
-
-            response = generator.generate_nft("0x09039B0ea5DA24cA9DD9C9ABDeCbbD6ef47C2bBA","ipfs://meh")
-            logger.info(f'NFT created: {response}')
-        except:
-            logging.exception(f'NFT Error')
+        t = threading.Thread(target=self.generate_nft, args=(img_id, nft_path, nft_co2))
+        t.start()
+        logger.info('Starting NFT coroutine')
 
         nft_doc = {
             "id" : img_id,
@@ -254,8 +262,8 @@ class HacktmHandler(Handler):
                 }, 
             ],
             "creation_time" : nft_timestamp,
-            "co2_absorbtion" : "0.3T",
-            "tree_type": "cherry"
+            "co2_absorbtion" : nft_co2,
+            "tree_type": tree_type
         }
 
         await self.db_connection.save_to_db('nfts', nft_doc)
@@ -268,6 +276,32 @@ class HacktmHandler(Handler):
         }
 
         return json_response(leaf_seg_entry,  status=200)
+
+    @staticmethod
+    def generate_nft(img_id, nft_path, nft_co2):
+        try:
+            logger.info("Started NFT coroutine")
+
+            node_url = "https://ropsten.infura.io/v3/c7d4a7dd4c414d8184e2e7acfe3a9057"
+            private_key = "872f3dee80ae96e40856c01bdd91cf332e7845aa669e001d335262dd04714a80"
+            signer_key = "872f3dee80ae96e40856c01bdd91cf332e7845aa669e001d335262dd04714a80" 
+            contract_address= "0x08AeDa006B3BFAD92AED30f6C79192f9F5D87b4c"
+            contract_abi = json.loads(open('ethereum_utils/abi.json').read().replace('\n', ''))
+
+            generator = Generator(node_url, private_key, signer_key, contract_address,contract_abi)
+
+            # store json ipfs
+            ipfs_json = {
+                "name": f"Stefan {img_id}",
+                "description": "A NFT helping the environment",
+                "image": nft_path,
+                "co2_absorbtion" : nft_co2,
+            }
+
+            response = generator.generate_nft("0x09039B0ea5DA24cA9DD9C9ABDeCbbD6ef47C2bBA","ipfs://meh")
+            logger.info(f'NFT created: {response}')
+        except:
+            logging.exception(f'NFT Error')
 
     async def retrieve_latest_nfts(self,request):
         nfts_answer = []
