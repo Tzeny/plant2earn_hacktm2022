@@ -25,5 +25,7 @@
 	<string>The application needs Face ID to authenticate you</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Access to the camera is needed for validating the planted trees</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>The application needs your location in order to geolocate the NFT</string>
 </dict>
 </plist>
