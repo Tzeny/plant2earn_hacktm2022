@@ -30,7 +30,7 @@ class SegmentationAnswer:
         self.answer_type = 1
         self.id = id
         self.bbox_path = bbox_path
-        self.leaf_segmented_path = leaf_segmented_path
+        self.leaf_path = leaf_segmented_path
 
     def __str__(self):
         return str(self.__dict__)
