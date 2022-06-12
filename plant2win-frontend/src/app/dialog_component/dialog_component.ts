@@ -49,8 +49,7 @@ export class DialogComponent implements OnInit {
     this.chartLabels = [];
     for (var date of this.data['info']['price']) {
       this.chartLabels.push(date['timestamp'].split('Z')[1]);
-      console.log(date['price'].split(' ')[0]);
-      this.chartData[0]['data'].push(date['price'].split(' ')[0])
+      this.chartData[0]['data'].push(date['price'])
     }
   }
 
