@@ -5,6 +5,8 @@ import aiohttp
 import sys
 import os
 from datetime import date, datetime
+from ethereum_utils.nft_generator import Generator
+import json
 
 import pytz
 from handlers.handler import Handler
@@ -18,7 +20,6 @@ from PIL import Image
 from io import BytesIO
 import base64
 import logging
-import json
 import time
 from multiprocessing import Lock
 
@@ -218,8 +219,25 @@ class HacktmHandler(Handler):
 
         nft_path = f'https://file.plant2win.com/nft/0{random.randint(1, 8)}.jpg'
         nft_timestamp = str(datetime.fromtimestamp(time.time(), tz=pytz.timezone('Europe/Bucharest'))).replace(' ','Z').split('.')[0]
-        
-        
+
+        node_url = "https://ropsten.infura.io/v3/c7d4a7dd4c414d8184e2e7acfe3a9057"
+        private_key = "872f3dee80ae96e40856c01bdd91cf332e7845aa669e001d335262dd04714a80"
+        signer_key = "872f3dee80ae96e40856c01bdd91cf332e7845aa669e001d335262dd04714a80" 
+        contract_address= "0x08AeDa006B3BFAD92AED30f6C79192f9F5D87b4c"
+        contract_abi = json.loads(open('ethereum_utils/abi.json').read().replace('\n', ''))
+
+        generator = Generator(node_url, private_key, signer_key, contract_address,contract_abi)
+
+        # store json ipfs
+        ipfs_json = {
+            "name": "Thor's hammer",
+            "description": "Mjölnir, the legendary hammer of the Norse god of thunder.",
+            "image": nft_path,
+            "strength": 20
+        }
+
+        response = generator.generate_nft("0x09039B0ea5DA24cA9DD9C9ABDeCbbD6ef47C2bBA","ipfs://meh")
+        logger.info(f'NFT created: {response}')
 
         nft_doc = {
             "id" : img_id,

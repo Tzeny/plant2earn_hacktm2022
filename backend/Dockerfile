@@ -1,4 +1,4 @@
-FROM python:3.7
+FROM python:3.9
 
 WORKDIR /backend
 
@@ -11,9 +11,9 @@ COPY ./requirements.txt ./
 RUN pip3 install -r requirements.txt
 COPY . ./
 
-RUN sed -i 's/self.http_client_cls(headers=self.headers)/self.http_client_cls(headers=self.headers, timeout=None)/' /usr/local/lib/python3.7/site-packages/universal_analytics/requests.py
+RUN sed -i 's/self.http_client_cls(headers=self.headers)/self.http_client_cls(headers=self.headers, timeout=None)/' /usr/local/lib/python3.9/site-packages/universal_analytics/requests.py
 
-RUN cat /usr/local/lib/python3.7/site-packages/universal_analytics/requests.py
+# RUN cat /usr/local/lib/python3.7/site-packages/universal_analytics/requests.py
 
 #RUN cat app.py
 ENV TZ=Europe/Bucharest

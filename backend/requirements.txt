@@ -26,3 +26,7 @@ azure-servicebus
 paramiko==2.7.2
 scp==0.13.3
 pytz
+eth-account 
+web3==5.12.0
+eth-abi
+hexbytes
