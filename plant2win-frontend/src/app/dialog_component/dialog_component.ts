@@ -53,7 +53,12 @@ export class DialogComponent implements OnInit {
     }
   }
 
-  BuyForest() {
-    this.dialog.open(DialogCertificateComponent);
+  BuyForest(uri) {
+    console.log(uri);
+    this.dialog.open(DialogCertificateComponent, {
+      data: {
+        url: uri
+      }
+    });
   }
 }
